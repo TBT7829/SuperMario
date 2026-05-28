@@ -38,33 +38,8 @@ Title::~Title()
 //---------------------------------------------------------------------------------
 void Title::init()
 {
-	ObjectManager* pOM = ObjectManager::getInstance();
-	PlayerManager::getInstance()->playerGenerate();
-
-	int mapBuffer[MAP_ROW][MAP_COL];
-	for (int row = 0; row < MAP_ROW; row++) {
-		for (int col = 0; col < MAP_COL; col++) {
-			// 一番下なら地面
-			if (MAP_ROW - 2 <= row) {
-				mapBuffer[row][col] = 0;
-			}
-			else {
-				mapBuffer[row][col] = 1;
-			}
-			
-		}
-	}
-
-
-	MapManager::getInstance()->createStage(mapBuffer, MAP_COL);
-
-	// 背景画像
-	imageBG = ImageManager::IMAGE_STAGE_BG_11;
-
 	// 次のシーンは未設定(-1)にしておく
 	nextScene = -1;
-
-
 }
 //---------------------------------------------------------------------------------
 //	更新処理
@@ -101,21 +76,7 @@ void Title::update()
 //---------------------------------------------------------------------------------
 void Title::render()
 {
-	ObjectManager* pOM = ObjectManager::getInstance();
-
-	int imgHandle = ImageManager::getInstance()->getImageHandle(imageBG);
-
-	// 背景の世界でのX座標は「0」
-	float bgWorldX = 0.0f;
-
-	// カメラを通して、画面上のどこに描画すべきかを計算する
-	float drawX = Camera::getInstance().worldToScreenX(bgWorldX);
-	DrawGraph(drawX, 0, imgHandle, TRUE);
-
-	pOM->renderAll();
-
-	MapManager::getInstance()->drawDebugMap();
-
+	
 }
 //---------------------------------------------------------------------------------
 //	終了処理

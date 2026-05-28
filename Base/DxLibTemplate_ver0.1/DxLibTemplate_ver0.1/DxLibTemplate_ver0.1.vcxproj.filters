@@ -70,6 +70,12 @@
     <Filter Include="Object\MapManager">
       <UniqueIdentifier>{bdaa67d1-660c-43fd-a93f-3b6256e4af36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Pipe">
+      <UniqueIdentifier>{c1b72d74-3541-4b8f-bae2-c90778493b3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Item">
+      <UniqueIdentifier>{a2c3473c-c470-44e3-ab06-793145b6e8b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneManager.cpp">
@@ -158,6 +164,42 @@
     </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>System\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Goomba.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="BrickBlock.cpp">
+      <Filter>Object\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestionBlock.cpp">
+      <Filter>Object\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="EmptyBlock.cpp">
+      <Filter>Object\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="HiddenBlock.cpp">
+      <Filter>Object\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="CoinBlock.cpp">
+      <Filter>Object\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="HardBlock.cpp">
+      <Filter>Object\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipe.cpp">
+      <Filter>Object\Pipe</Filter>
+    </ClCompile>
+    <ClCompile Include="SuperMushroom.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="FireFlower.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Object\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +304,42 @@
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>System\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Goomba.h">
+      <Filter>Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="BrickBlock.h">
+      <Filter>Object\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionBlock.h">
+      <Filter>Object\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="EmptyBlock.h">
+      <Filter>Object\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="HiddenBlock.h">
+      <Filter>Object\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="HardBlock.h">
+      <Filter>Object\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CoinBlock.h">
+      <Filter>Object\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipe.h">
+      <Filter>Object\Pipe</Filter>
+    </ClInclude>
+    <ClInclude Include="SuperMushroom.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="FireFlower.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Object\Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

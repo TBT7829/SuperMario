@@ -1,5 +1,12 @@
 #pragma once
 
+#include <cstdio>
+#include <cstdlib>
+
+#if defined(_WIN32) || defined(_WIN64)
+#include <Windows.h>
+#endif
+
 class Float2;
 
 //---------------------------------------------------------------------------------
@@ -23,6 +30,25 @@ int fixValue(int val, int min, int max);
 //          Å´
 #include "CommonFunc.inc"
 
+#if defined(_MSC_VER)
+#define MY_FUNCTION_NAME __FUNCSIG__
+#else
+#define MY_FUNCTION_NAME __func__
+#endif
+
+static inline void MyAbortImpl(const char* file, int line, const char* func)
+{
+    fprintf(stderr, "Fatal Error: abort() called at %s:%d in function %s\n", file, line, func);
+    fflush(stderr);
+#if defined(_WIN32) || defined(_WIN64)
+    char _my_abort_buf[1024];
+    int _n = snprintf(_my_abort_buf, sizeof(_my_abort_buf), "Fatal Error: abort() called at %s:%d in function %s\n", file, line, func);
+    if (_n > 0) { OutputDebugStringA(_my_abort_buf); }
+#endif
+    abort();
+}
+
+#define MY_ABORT() MyAbortImpl(__FILE__, __LINE__, MY_FUNCTION_NAME)
 
 //---------------------------------------------------------------------------------
 //	É}ÉEÉXä÷êî
