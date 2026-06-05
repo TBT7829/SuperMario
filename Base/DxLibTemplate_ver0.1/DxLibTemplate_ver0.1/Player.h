@@ -12,6 +12,7 @@ public:
 	//! @brief プレイヤーの移動状態
 	enum MOVE_STATE {
 		GROUND = 0,	//!< 地面に接地している状態
+		RUNNING,	//!< 走っている状態
 		JUMP,		//!< ジャンプ中の状態
 		FALL		//!< 落下中の状態
 	};
@@ -29,6 +30,16 @@ public:
 		STAR		//!< スター状態
 	};
 
+	//! @brief プレイヤーの姿勢(立っている、かがんでいる)
+	enum POSTURE_STATE {
+		STAND = 0,	//!< 立っている状態
+		SNEAK		//!< かがんでいる状態
+	};
+
+	enum DIRECTION {
+		LEFT = 0,		//!< 左向き
+		RIGHT,	//!< 右向き
+	};
 
 	//! @brief コンストラクタ
 	//! @param _id オブジェクトID
@@ -58,7 +69,8 @@ public:
 	StateMachine<Player> formState;
 	//! @brief エフェクト状態を管理するステートマシン
 	StateMachine<Player> effectState;
-	
+	// !@brief 姿勢状態を管理するステートマシン
+	StateMachine<Player> postureState;
 	
 private:
 	//! @brief 地面に接地している時の初期化処理
@@ -67,6 +79,13 @@ private:
 	void updateGround();
 	//! @brief 地面に接地している時の終了処理
 	void exitGround();
+
+	//! @brief 走っている時の初期化処理
+	void initRunning();
+	//! @brief 走っている時の更新処理
+	void updateRunning();
+	//! @brief 走っている時の終了処理
+	void exitRunning();
 
 	//! @brief ジャンプ中の初期化処理
 	void initJump();
@@ -87,4 +106,13 @@ private:
 	void updateLow();
 	//! @brief 大きい状態での更新処理
 	void updateTall();
+
+	//! @brief // ジャンプのホールド時間をカウントする変数
+	int jumpHoldCounter; 
+	//! @brief 走り状態の維持フラグ（シフトが押されている間は走り状態を維持する）
+	bool isRun;
+	//! @brief プレイヤーの向き（LEFT = 左向き, RIGHT = 右向き）
+	DIRECTION direction;
+	// !@brief ジャンプ中の重力の強さ（ジャンプのホールド時間に応じて変化させるための変数）
+	float currentJumpGravity;
 };

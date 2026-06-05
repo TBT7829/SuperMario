@@ -36,6 +36,7 @@ public:
 	//! @brief サイズ
     Float2 size;
 
+    //! @brief 当たり判定用
     //! @brief 通り抜けられない固いブロックかどうかのフラグ
     bool isSolid;
 };

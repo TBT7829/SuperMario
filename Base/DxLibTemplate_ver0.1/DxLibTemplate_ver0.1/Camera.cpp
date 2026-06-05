@@ -23,7 +23,7 @@ float Camera::worldToScreenX(float worldX) const
     return worldX - offsetX; 
 }
 
-inline float Camera::getOffsetX() const 
+float Camera::getOffsetX() const 
 {
     return offsetX; 
 }

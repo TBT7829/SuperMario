@@ -11,11 +11,7 @@ public:
     //! @param _start ブロックの開始位置
     //! @note 型（objectType）には GROUND_BLOCK を指定しており、
     //!       座標やサイズ、isSolid の初期化は親クラス（Block）で行われる
-    GroundBlock(int _id, Float2 _start)
-        : Block(_id, OBJECT_TYPE::GROUND_BLOCK, _start, { 16.0f, 16.0f })
-    {
-
-    }
+    GroundBlock(int _id, Float2 _start);
 
     //! @brief デストラクタ
     virtual ~GroundBlock();
@@ -28,4 +24,7 @@ public:
     //! @note Block クラス（Object クラス）から継承した純粋仮想関数をオーバーライド
     void render() override;
 
+
+    //! @brief 画像を保存する変数
+    int image;
 };

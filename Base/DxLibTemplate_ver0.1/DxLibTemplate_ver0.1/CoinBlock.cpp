@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Coin.h"
 #include "CommonFunc.h"
+#include "CollisionManager.h"
 #include <DxLib.h>
 
 //---------------------------------------------------------------------------------
@@ -63,7 +64,7 @@ void CoinBlock::render()
 void CoinBlock::onHit(int hitDirection)
 {
 	// コインがまだ残っており、下からのヒット（ジャンプで下から叩いた）の場合のみ生成
-	if (coinSpawnedCount < maxCoinCount && hitDirection == 1)
+	if (coinSpawnedCount < maxCoinCount && hitDirection == CollisionManager::BOTTOM)
 	{
 		spawnCoin();
 	}
