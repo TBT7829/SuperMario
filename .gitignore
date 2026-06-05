@@ -49,6 +49,10 @@ bld/
 
 # Build results on 'Bin' directories
 **/[Bb]in/*
+!**/[Bb]in/**/*.exe
+!**/[Bb]in/**/*.pdb
+!**/[Bb]in/**/*.1.pdb
+!**/[Bb]in/**/*.txt
 !**/[Bb]in/**/*.png
 !**/[Bb]in/**/*.jpg
 !**/[Bb]in/**/*.jpeg
