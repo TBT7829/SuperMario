@@ -2,7 +2,7 @@
 
 //! @brief ゲームカメラを管理するクラス
 //! プレイヤーを追いかけ、ワールド座標をスクリーン座標に変換する
-class Camera 
+class Camera
 {
 private:
     //! @brief コンストラクタ
@@ -35,4 +35,8 @@ public:
 private:
     //! @brief カメラのX方向オフセット値
     float offsetX;
+
+    //! @brief プレイヤーが到達した最大 X（カメラが戻らないための基準）
+    float maxReachedX;
+
 };

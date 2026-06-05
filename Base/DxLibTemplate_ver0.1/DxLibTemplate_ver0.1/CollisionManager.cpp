@@ -10,6 +10,9 @@
 #include "Object.h"
 #include "Player.h"
 #include "Block.h"
+#include "QuestionBlock.h"
+#include "CoinBlock.h"
+#include "Pipe.h"
 
 #include "Const.h"
 #include "HitFunc.h"
@@ -26,46 +29,104 @@ void CollisionManager::updateCollision()
 	MapManager* pMM = MapManager::getInstance();
 	Player* pPlayer = pPM->get();
 
-	// 挙動確認用のベース、プレイヤーと地面のみでの当たり判定
+	// プレイヤーと当たり判定
 	for (int b = 0; b < BLOCK_MAX; b++) {
 		Block* pBlock = pBM->pBlockArray[b];
 		if (pBlock == nullptr || !pBlock->isSolid) continue;
 
-		switch (pBlock->getObjectType()) {
-		case GROUND_BLOCK:
-			// 四角形同士が当たっているかチェック
-			// detectCollision を使って当たり方向を取得
-			CollisionInfo ci = detectCollision(pPlayer->pos, pPlayer->size, pBlock->pos, pBlock->size);
+		// A(プレイヤー) と B(ブロック) の当たり判定
+		CollisionInfo ci = detectCollision(pPlayer->pos, pPlayer->size, pBlock->pos, pBlock->size);
 
-			// 当たっているかどうか
-			if (ci.isHit) {
-				// 床の上に立たせる押し戻し処理
-				if (ci.side == TOP) {
-					// マリオをブロックのすぐ上にピッタリ配置する
-					float collectY = pBlock->pos.y - pPlayer->size.y;
-					pPlayer->pos.y = collectY;
-					// 下向きの落下速度を 0 にして、落下のエネルギーを止める
-					pPlayer->movSpeed.y = 0.0f;
-					// プレイヤーの状態を「地面に接地している状態」にする
-					pPlayer->onLand(pBlock->pos.y);
-				}
-				else {
-					// 将来的にLEFT/RIGHT/BOTTOMなどで追加したい処理(横方向の押し戻しや頭打ち)があるならここに追加して！！！
-					// 現時点ではプレイヤーがブロックに食い込んだ場合、最小分離ベクトルに従って位置を補正してます
-					if (ci.side == LEFT || ci.side == RIGHT) {
-						pPlayer->pos.x += ci.penetration.x;
-					}
-					else if (ci.side == BOTTOM) {
-						// 頭打ち時の位置補正
-						pPlayer->pos.y += ci.penetration.y;
-						// 必要なら上方向への速度のキャンセルとかをここで行ってもいい
-					}
-				}
+		// 当たっていなければ次へ
+		if (!ci.isHit) continue;
+
+		//switch (pBlock->getObjectType()) {
+		//case GROUND_BLOCK:
+		//	// 四角形同士が当たっているかチェック
+		//	// detectCollision を使って当たり方向を取得
+		//	CollisionInfo ci = detectCollision(pPlayer->pos, pPlayer->size, pBlock->pos, pBlock->size);
+
+		//	// 当たっているかどうか
+		//	if (ci.isHit) {
+		//		// 床の上に立たせる押し戻し処理
+		//		if (ci.side == TOP) {
+		//			// マリオをブロックのすぐ上にピッタリ配置する
+		//			float collectY = pBlock->pos.y - pPlayer->size.y;
+		//			pPlayer->pos.y = collectY;
+		//			// 下向きの落下速度を 0 にして、落下のエネルギーを止める
+		//			pPlayer->movSpeed.y = 0.0f;
+		//			// プレイヤーの状態を「地面に接地している状態」にする
+		//			pPlayer->onLand(pBlock->pos.y);
+		//		}
+		//		else {
+		//			// 将来的にLEFT/RIGHT/BOTTOMなどで追加したい処理(横方向の押し戻しや頭打ち)があるならここに追加して！！！
+		//			// 現時点ではプレイヤーがブロックに食い込んだ場合、最小分離ベクトルに従って位置を補正してます
+		//			if (ci.side == LEFT || ci.side == RIGHT) {
+		//				pPlayer->pos.x += ci.penetration.x;
+		//			}
+		//			else if (ci.side == BOTTOM) {
+		//				// 頭打ち時の位置補正
+		//				pPlayer->pos.y += ci.penetration.y;
+		//				// 必要なら上方向への速度のキャンセルとかをここで行ってもいい
+		//			}
+		//		}
+		//	}
+		//	break;
+		//}
+
+		// 衝突方向ごとに処理
+		switch (ci.side) {
+		case TOP:
+			// プレイヤーがブロックの上に立った
+		{
+			float collectY = pBlock->pos.y - pPlayer->size.y;
+			pPlayer->pos.y = collectY;
+			// 落下速度をキャンセル
+			pPlayer->movSpeed.y = 0.0f;
+			// 着地処理（状態遷移など）
+			pPlayer->onLand(pBlock->pos.y);
+		}
+		break;
+
+		case BOTTOM:
+			// プレイヤーがブロックの下から当たった(頭打ち)
+		{
+			// 最小分離ベクトルで位置補正（上方向へ押し戻す）
+			pPlayer->pos.y += ci.penetration.y;
+			// 上向き速度が残っているならキャンセルして貫通を防ぐ
+			if (pPlayer->movSpeed.y < 0.0f) {
+				pPlayer->movSpeed.y = 0.0f;
 			}
+
+			// ブロック固有の反応（ハテナ・コイン等）
+			if (pBlock->getObjectType() == QUESTION_BLOCK) {
+				static_cast<QuestionBlock*>(pBlock)->onHit(CollisionManager::BOTTOM);
+			}
+			else if (pBlock->getObjectType() == COIN_BLOCK) {
+				static_cast<CoinBlock*>(pBlock)->onHit(CollisionManager::BOTTOM);
+			}
+			// 将来的に BRICK_BLOCK などもここで処理追加可
+		}
+		break;
+
+		case LEFT:
+		case RIGHT:
+			// 横方向の押し戻し（壁にめり込んだ場合の補正）
+		{
+			pPlayer->pos.x += ci.penetration.x;
+			// 水平方向の速度がブロックへの方向に残っていると貫通の原因になるのでキャンセル
+			// penetration.x は A を押し戻す方向の値になっている（符号付き）
+			// movSpeed.x と penetration が逆符号ならプレイヤーがブロックに突っ込んだ状態なので速度をゼロにする
+			if ((ci.side == LEFT && pPlayer->movSpeed.x > 0.0f) ||
+				(ci.side == RIGHT && pPlayer->movSpeed.x < 0.0f)) {
+				pPlayer->movSpeed.x = 0.0f;
+			}
+		}
+		break;
+
+		default:
 			break;
 		}
-
-		
 
 		
 	}
