@@ -35,15 +35,23 @@ void Pipe::render()
 	int drawY = (int)pos.y;
 
 	int x1 = (int)drawX;
-	int y1 = drawY + (int)size.y;
+	int y1 = (int)drawY;
 	int x2 = (int)(drawX + size.x);
-	int y2 = drawY;
+	int y2 = (int)(drawY + size.y);
 
-	// 正規化（DrawBox / DrawExtendGraph は左上, 右下）
-	int left = min(x1, x2);
-	int top = min(y1, y2);
-	int right = max(x1, x2);
-	int bottom = max(y1, y2);
+	// 左上と右下の座標を計算（どちらが左上かは x1/x2, y1/y2 の大小関係で決まる）
+	// DrawBox は左上(x1, y1) と右下(x2, y2) を指定するが、x1/x2, y1/y2 のどちらが左上かは保証されないので、min/max で正しい座標を計算する
+	// (DrawBox / DrawExtendGraph は左上, 右下)
+	//int left = min(x1, x2);
+	//int top = min(y1, y2);
+	//int right = max(x1, x2);
+	//int bottom = max(y1, y2);
+	int left = x1;
+	int top = y1;
+	int right = x2;
+	int bottom = y2;
+
+
 
 	// 単純な矩形塗りつぶし（既存の見た目）
 	DrawBox(left, top, right, bottom, GetColor(34, 139, 34), TRUE);
