@@ -35,7 +35,7 @@ void initStage1Map()
 
     // もう一つ異なる高さの土管（幅2、少し右側）
     int pipeCol2 = 48;
-    stage1MapData[MAP_ROW - 5][pipeCol2]     = PIPE_BLOCK; // 高めの土管（上部）
+    stage1MapData[MAP_ROW - 3][pipeCol2]     = PIPE_BLOCK; // 高めの土管（上部）
 
 
     // --- ハテナブロックとコインブロックの配置（例） ---
