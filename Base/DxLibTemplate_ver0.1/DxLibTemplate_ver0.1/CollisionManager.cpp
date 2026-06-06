@@ -13,6 +13,7 @@
 #include "QuestionBlock.h"
 #include "CoinBlock.h"
 #include "Pipe.h"
+#include "BrickBlock.h"
 
 #include "Const.h"
 #include "HitFunc.h"
@@ -40,6 +41,7 @@ void CollisionManager::updateCollision()
 		// 当たっていなければ次へ
 		if (!ci.isHit) continue;
 
+		//----------------------------------------------------------------------
 		//switch (pBlock->getObjectType()) {
 		//case GROUND_BLOCK:
 		//	// 四角形同士が当たっているかチェック
@@ -73,6 +75,7 @@ void CollisionManager::updateCollision()
 		//	}
 		//	break;
 		//}
+		//----------------------------------------------------------------------
 
 		// 衝突方向ごとに処理
 		switch (ci.side) {
@@ -105,7 +108,9 @@ void CollisionManager::updateCollision()
 			else if (pBlock->getObjectType() == COIN_BLOCK) {
 				static_cast<CoinBlock*>(pBlock)->onHit(CollisionManager::BOTTOM);
 			}
-			// 将来的に BRICK_BLOCK などもここで処理追加可
+			else if (pBlock->getObjectType() == BRICK_BLOCK) {
+				static_cast<BrickBlock*>(pBlock)->onHit(CollisionManager::BOTTOM);
+			}
 		}
 		break;
 

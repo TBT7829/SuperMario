@@ -114,7 +114,7 @@ void MapManager::createStage(int mapData[MAP_ROW][MAP_COL], int stageWidth)
             break;
             case BRICK_BLOCK: // レンガブロック
             {
-                /*
+                
                 BrickBlock* pBrick = new BrickBlock(pOM->generateId(), pixel);
                 if (pBM->Add(pBrick) == false) 
                 {
@@ -126,7 +126,7 @@ void MapManager::createStage(int mapData[MAP_ROW][MAP_COL], int stageWidth)
                     delete pBrick; 
                     MY_ABORT(); 
                 }
-                */
+                
             }
             break;
             case QUESTION_BLOCK: // ハテナブロック
@@ -221,10 +221,8 @@ void MapManager::createStage(int mapData[MAP_ROW][MAP_COL], int stageWidth)
                     break;
                 }
 
-
-
                 // 単一セル扱いで Pipe を作成（幅2, 高さ3）
-                Float2 pipeSize = { (float)BLOCK_SIZE * 2, (float)BLOCK_SIZE * 3 };
+                Float2 pipeSize = { (float)BLOCK_SIZE * 2, (float)BLOCK_SIZE * 2 };
 
                 // 基準セル(pixel)の「下端」を土管の底に合わせる
                 int pipePosX = (int)pixel.x;
@@ -299,7 +297,7 @@ void MapManager::drawDebugMap()
 
             // 種類に合わせて色を変えて、四角の枠線を描画
             switch (curMassData) {
-            case 0:
+            case -1:
                 DrawLineBox(x1, y1, x2, y2, white);
                 break;
 
@@ -308,10 +306,11 @@ void MapManager::drawDebugMap()
                 break;
 
             case 2:
-                DrawLineBox(x1, y1, x2, y2, yellow);
+                //DrawLineBox(x1, y1, x2, y2, yellow);
                 break;
 
             default:
+                DrawLineBox(x1, y1, x2, y2, white);
                 break;
             }
         }

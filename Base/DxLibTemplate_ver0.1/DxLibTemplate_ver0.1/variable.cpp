@@ -26,26 +26,28 @@ void initStage1Map()
         stage1MapData[MAP_ROW - 2][c] = GROUND_BLOCK;     // その上も地面とする（歩ける床）
     }
 
-    // --- パイプ(例) ---
-    // 短い土管（幅2タイル）を設置: マップの左寄り（列12-13）
-    // 値 7 を土管コードとして使う（MapManager に対応スロットを追加済みである前提）
-    int pipeCol = 12;
-    stage1MapData[MAP_ROW - 3][pipeCol]     = PIPE_BLOCK; // 土管上部
-   
+    
+    stage1MapData[9][16] = QUESTION_BLOCK;   
 
-    // もう一つ異なる高さの土管（幅2、少し右側）
-    int pipeCol2 = 48;
-    stage1MapData[MAP_ROW - 3][pipeCol2]     = PIPE_BLOCK; // 高めの土管（上部）
-
-
-    // --- ハテナブロックとコインブロックの配置（例） ---
-    // ハテナブロック（値 = 2）: 空中に1つ
-    stage1MapData[8][20] = QUESTION_BLOCK;   // ハテナ（中身は MapManager のデフォルト処理に従う）
-    // コインブロック（値 = 5）
-    stage1MapData[8][22] = COIN_BLOCK;
+    stage1MapData[9][20] = BRICK_BLOCK;
+    stage1MapData[9][21] = QUESTION_BLOCK;   // ハテナ（中身は MapManager のデフォルト処理に従う）
+    stage1MapData[9][22] = BRICK_BLOCK;
+    stage1MapData[5][22] = QUESTION_BLOCK;   
+    stage1MapData[9][23] = QUESTION_BLOCK;
+    stage1MapData[9][24] = BRICK_BLOCK;
 
 
-    // 生成をするときのサンプル
+    stage1MapData[9][27] = COIN_BLOCK;
+
+    stage1MapData[MAP_ROW - 3][28] = PIPE_BLOCK;
+
+    stage1MapData[MAP_ROW - 3][38] = PIPE_BLOCK;
+
+    stage1MapData[MAP_ROW - 3][46] = PIPE_BLOCK;
+
+    stage1MapData[MAP_ROW - 3][57] = PIPE_BLOCK;
+
+    // 生成をするときのサンプル(皆が見る用)
     
     // --- レンガブロック群（値 = 1） ---
     // 小さなブロック群を作る（平台）
