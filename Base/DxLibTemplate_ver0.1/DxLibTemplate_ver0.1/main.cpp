@@ -50,8 +50,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//　画像の読み込み
 	
 	// キャラなどのオブジェクト
-	//pIMGM->setImageInfo(ImageManager::IMAGE_STAGE_BG_11, "world_bgonly_11.png");
-	pIMGM->setImageInfo(ImageManager::IMAGE_STAGE_BG_11, "world_11.png");
+	pIMGM->setImageInfo(ImageManager::IMAGE_STAGE_BG_11, "world_bgonly_11.png");
+	//pIMGM->setImageInfo(ImageManager::IMAGE_STAGE_BG_11, "world_11.png");
 
 	pIMGM->setImageInfo(ImageManager::IMAGE_GROUND_BLOCK_11, "ground_block_11.png");
 
