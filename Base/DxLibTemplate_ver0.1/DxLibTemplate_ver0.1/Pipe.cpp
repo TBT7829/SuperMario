@@ -97,3 +97,8 @@ bool Pipe::isEnterable() const
 {
 	return enterable;
 }
+
+void Pipe::onHit(int hitDirection)
+{
+
+}

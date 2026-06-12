@@ -40,6 +40,7 @@ private:
 	//! @brief 内部アイテムタイプ
 	int itemType;
 
-	//! @brief ハテナブロックからアイテムを生成する関数
+	//! @brief 隠しブロックからアイテムを生成する関数
 	void spawnItem();
+
 };

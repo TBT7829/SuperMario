@@ -8,7 +8,7 @@
 #include "ObjectManager.h"
 #include "MapManager.h"
 #include "CollisionManager.h"
-#include "variable.h"
+#include "mapdata.h"
 #include <DxLib.h>
 
 

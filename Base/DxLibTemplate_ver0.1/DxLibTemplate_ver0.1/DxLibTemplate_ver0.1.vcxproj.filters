@@ -28,9 +28,6 @@
     <Filter Include="System\Function">
       <UniqueIdentifier>{b749b686-b2c0-4173-95a6-15739ce5e1ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="System\Variable">
-      <UniqueIdentifier>{e544dd1b-4a85-4185-92c7-07d625d5d1d4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="System\Color">
       <UniqueIdentifier>{2c9f2bd3-e30d-4e9a-b5ac-6723a7f1d54f}</UniqueIdentifier>
     </Filter>
@@ -76,6 +73,9 @@
     <Filter Include="Object\Item">
       <UniqueIdentifier>{a2c3473c-c470-44e3-ab06-793145b6e8b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="System\MapData">
+      <UniqueIdentifier>{e544dd1b-4a85-4185-92c7-07d625d5d1d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneManager.cpp">
@@ -111,8 +111,8 @@
     <ClCompile Include="TextItem.cpp">
       <Filter>Object\TextItem</Filter>
     </ClCompile>
-    <ClCompile Include="variable.cpp">
-      <Filter>System\Variable</Filter>
+    <ClCompile Include="mapdata.cpp">
+      <Filter>System\MapData</Filter>
     </ClCompile>
     <ClCompile Include="Stage.cpp">
       <Filter>Scene</Filter>
@@ -239,8 +239,8 @@
     <ClInclude Include="TextItem.h">
       <Filter>Object\TextItem</Filter>
     </ClInclude>
-    <ClInclude Include="variable.h">
-      <Filter>System\Variable</Filter>
+    <ClInclude Include="mapdata.h">
+      <Filter>System\MapData</Filter>
     </ClInclude>
     <ClInclude Include="Stage.h">
       <Filter>Scene</Filter>

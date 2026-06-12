@@ -193,7 +193,7 @@
     <ClCompile Include="TextItem.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Title.cpp" />
-    <ClCompile Include="variable.cpp" />
+    <ClCompile Include="mapdata.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationData.h" />
@@ -241,7 +241,7 @@
     <ClInclude Include="TextItem.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Title.h" />
-    <ClInclude Include="variable.h" />
+    <ClInclude Include="mapdata.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CommonFunc.inc" />

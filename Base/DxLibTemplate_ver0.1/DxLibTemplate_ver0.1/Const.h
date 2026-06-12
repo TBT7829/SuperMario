@@ -64,12 +64,12 @@ const float JUMP_SUSTAIN = 0.12f;
 
 // ジャンプ段階用の倍率（内部実装、ここで調整可能）
 static const float JUMP_INIT_MULT_LOW = 1.00f; // 立ち/歩き
-static const float JUMP_INIT_MULT_MID = 1.12f; // 中速
-static const float JUMP_INIT_MULT_HIGH = 1.22f; // Bダッシュ（最高速）
+static const float JUMP_INIT_MULT_MID = 1.08f; // 中速
+static const float JUMP_INIT_MULT_HIGH = 1.12f; // Bダッシュ（最高速）
 
 static const float GRAVITY_MULT_LOW = 1.20f; // 低速時は重力強め（早く落ちる）
 static const float GRAVITY_MULT_MID = 1.00f; // 中速は基準
-static const float GRAVITY_MULT_HIGH = 0.82f; // 高速時は重力弱め（高く長く飛べる）
+static const float GRAVITY_MULT_HIGH = 1.05f; // 高速時は重力弱め（高く長く飛べる）
 
 
 //-----------------------------------------

@@ -149,7 +149,7 @@ void MapManager::createStage(int mapData[MAP_ROW][MAP_COL], int stageWidth)
             break;
             case EMPTY_BLOCK: // 空ブロック
             {
-                /*
+                
                 EmptyBlock* pEmpty = new EmptyBlock(pOM->generateId(), pixel);
                 if (pBM->Add(pEmpty) == false) 
                 {
@@ -161,12 +161,12 @@ void MapManager::createStage(int mapData[MAP_ROW][MAP_COL], int stageWidth)
                     delete pEmpty; 
                     MY_ABORT();
                 }
-                */
+                
             }
             break;
             case HIDDEN_BLOCK: // 隠しブロック
             {
-                /*
+                
                 HiddenBlock* pHidden = new HiddenBlock(pOM->generateId(), pixel);
                 if (pBM->Add(pHidden) == false)
                 {
@@ -178,7 +178,7 @@ void MapManager::createStage(int mapData[MAP_ROW][MAP_COL], int stageWidth)
                     delete pHidden;
                     MY_ABORT(); 
                 }
-                */
+                
             }
             break;
             case COIN_BLOCK: // コインブロック
@@ -216,6 +216,7 @@ void MapManager::createStage(int mapData[MAP_ROW][MAP_COL], int stageWidth)
             break;
             case PIPE_BLOCK: // 土管
             {
+                /*
                 // ローカル tempMap 上でまだ未処理の PIPE_BLOCK のみ処理する
                 if (tempMap[row][col] != PIPE_BLOCK) {
                     break;
@@ -241,6 +242,64 @@ void MapManager::createStage(int mapData[MAP_ROW][MAP_COL], int stageWidth)
                 // ローカルコピーにフラグを立てて重複生成を防止
                 tempMap[row][col] = -1;
                 mapArray[row][col] = PIPE_BLOCK;
+                */
+
+                // ローカル tempMap 上でまだ未処理の PIPE_BLOCK のみ処理する
+                if (tempMap[row][col] != PIPE_BLOCK) {
+                    break;
+                }
+
+                // 上から下にスキャンしているため、ここに来たときは必ずその土管の「左上」のマスになる。
+                // ここから右と下にどれだけ PIPE_BLOCK が連続しているかを調べて、土管のサイズ（マス数）を自動計測する。
+
+                int pipeWidthNum = 0;
+                while (col + pipeWidthNum < MAP_COL && tempMap[row][col + pipeWidthNum] == PIPE_BLOCK) {
+                    pipeWidthNum++;
+                }
+
+                int pipeHeightNum = 0;
+                while (row + pipeHeightNum < MAP_ROW && tempMap[row + pipeHeightNum][col] == PIPE_BLOCK) {
+                    pipeHeightNum++;
+                }
+
+                // 計測したマス数から、実際のピクセルサイズを計算
+                Float2 pipeSize;
+                pipeSize.x = (float)(pipeWidthNum * BLOCK_SIZE);
+                pipeSize.y = (float)(pipeHeightNum * BLOCK_SIZE);
+
+                // 座標の設定
+                // 最初に見つけた「左上マス」の座標が、そのまま土管オブジェクトの左上座標（pipePos）になる
+                Float2 pipePos = pixel;
+
+                // ワープ出口座標（ここでは仮で土管の天面中央に設定）
+                Float2 exitPos = { pipePos.x + (pipeSize.x / 2.0f), pipePos.y };
+
+                // 土管オブジェクトを生成
+                Pipe* pPipe = new Pipe(pOM->generateId(), pipePos, pipeSize, exitPos, pipeCounter++, true);
+
+                // 各マネージャーへの登録
+                if (pBM->Add(pPipe) == false) 
+                {
+                    delete pPipe;
+                    MY_ABORT();
+                }
+                if (pOM->add(pPipe) == false)
+                {
+                    delete pPipe;
+                    MY_ABORT();
+                }
+
+                // 重複生成の防止処理
+                // この土管が占有している w × h の全マスの tempMap を -1 にして、ループが二重に処理するのを防ぐ
+                for (int r = 0; r < pipeHeightNum; ++r) {
+                    for (int c = 0; c < pipeWidthNum; ++c) {
+                        tempMap[row + r][col + c] = -1;
+
+                        // 表示・当たり判定用の最終マップ配列にも土管の存在を記録
+                        mapArray[row + r][col + c] = PIPE_BLOCK;
+                    }
+                }
+
             }
             break;
             case GOOMBA: // クリボー
