@@ -122,6 +122,8 @@ void Stage::render()
 	MapManager::getInstance()->drawDebugMap();
 #endif
 
+	int a;
+
 }
 //---------------------------------------------------------------------------------
 //	I—¹ˆ—
