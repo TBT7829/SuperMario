@@ -26,6 +26,8 @@ void initStage1Map()
         stage1MapData[MAP_ROW - 2][c] = GROUND_BLOCK;     // ÇªÇÃè„Ç‡ínñ Ç∆Ç∑ÇÈÅiï‡ÇØÇÈè∞Åj
     }
 
+    stage1MapData[MAP_ROW - 3][189] = HARD_BLOCK;
+
     
     stage1MapData[9][16] = QUESTION_BLOCK;   
 

@@ -199,19 +199,19 @@ void MapManager::createStage(int mapData[MAP_ROW][MAP_COL], int stageWidth)
             break;
             case HARD_BLOCK: // çdÇ¢ÉuÉçÉbÉN
             {
-                /*
+                
                 HardBlock* pHard = new HardBlock(pOM->generateId(), pixel);
                 if (pBM->Add(pHard) == false) 
                 {
                     delete pHard; 
-                    abort(); 
+                    MY_ABORT(); 
                 }
                 if (pOM->add(pHard) == false) 
                 {
                     delete pHard;
                     MY_ABORT(); 
                 }
-                */
+                
             }
             break;
             case PIPE_BLOCK: // ìyä«
