@@ -104,7 +104,7 @@ private:
 	//! @brief 落下中の終了処理
 	void exitFall();
 
-
+	
 	//! @brief 小さい状態での更新処理
 	void updateLow();
 	//! @brief 大きい状態での更新処理
@@ -116,6 +116,6 @@ private:
 	bool isRun;
 	//! @brief プレイヤーの向き（LEFT = 左向き, RIGHT = 右向き）
 	DIRECTION direction;
-	// !@brief ジャンプ中の重力の強さ（ジャンプのホールド時間に応じて変化させるための変数）
+	//! @brief ジャンプ中の重力の強さ（ジャンプのホールド時間に応じて変化させるための変数）
 	float currentJumpGravity;
 };

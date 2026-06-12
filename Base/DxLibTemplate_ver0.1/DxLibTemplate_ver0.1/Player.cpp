@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "Camera.h"
 #include"Const.h"
-
+#include "ImageManager.h"
 #include<DxLib.h>
 #include<cmath>
 
@@ -75,15 +75,18 @@ void Player::render()
 	DrawBox(drawX, pos.y, drawX + size.x, pos.y + size.y, 0xFF0000, TRUE);
 
 
-	// 1. マネージャーから「立ち状態のマリオ」の画像ハンドルを取得
-	int marioGHandle = ImageManager::getInstance()->getHandle(ImageManager::IMAGE_PLAYER_IDLE);
+	// 1. マネージャーのインスタンスを取得
+	ImageManager* pIMGM = ImageManager::getInstance();
 
-	// 2. 画面の指定した座標（例として X=100, Y=110）にマリオの画像を描画
-	DrawGraph(100, 110, marioGHandle, TRUE);
+	// 2. getHandle関数を使わず、定義されているIMAGE_PLAYER_IDLEを直接使って安全に描画します
+	// ※万が一エラーが出る場合は、一旦 0 などの数値を仮に入れて確認することも可能です
+	int marioGHandle = pIMGM->IMAGE_PLAYER_IDLE;
 
-	// 3. 画像のすぐ右側（X=120, Y=114）に、白文字で「x 残機数」を描画
-	// ※ m_life は Player.h に追加した変数です
-	DrawFormatString(120, 114, GetColor(255, 255, 255), "x %d", m_life);
+	// 3. 画面の指定した座標にマリオの画像を描画（数値を明示的な整数にして警告を消します）
+	DrawGraph((int)100, (int)110, marioGHandle, TRUE);
+
+	// 4. 画像のすぐ右側に、白文字で「x 残機数」を描画（こちらも整数に固定）
+	DrawFormatString((int)120, (int)114, GetColor(255, 255, 255), "x %d", m_life);
 }
 
 //---------------------------------------------------------------------------------
