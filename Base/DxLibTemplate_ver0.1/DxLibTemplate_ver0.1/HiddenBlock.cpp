@@ -50,3 +50,9 @@ void HiddenBlock::render()
 
 	DrawGraph(drawX, y1, imgHandle, TRUE);
 }
+
+//! @brief ブロックがヒットされた時のコールバック実装
+void HiddenBlock::onHit(int hitDirection)
+{
+	// 後で処理を書きます
+}

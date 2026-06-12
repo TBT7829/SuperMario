@@ -35,3 +35,9 @@ void EmptyBlock::render()
 	DrawBox(x1, y1, x2, y2, GetColor(128, 128, 128), TRUE);
 	DrawLineBox(x1, y1, x2, y2, GetColor(64, 64, 64));
 }
+
+//! @brief ブロックがヒットされた時のコールバック実装
+void EmptyBlock::onHit(int hitDirection)
+{
+	// 何も起きないので特に処理はなし。
+}

@@ -44,3 +44,9 @@ void HardBlock::render()
 
 	DrawGraph(drawX, y1, imgHandle, TRUE);
 }
+
+//! @brief ブロックがヒットされた時のコールバック実装
+void HardBlock::onHit(int hitDirection)
+{
+	// 何も起きないので特に処理はなし。
+}

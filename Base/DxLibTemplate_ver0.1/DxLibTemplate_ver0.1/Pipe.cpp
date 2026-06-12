@@ -97,3 +97,9 @@ bool Pipe::isEnterable() const
 {
 	return enterable;
 }
+
+//! @brief ブロックがヒットされた時のコールバック実装
+void Pipe::onHit(int hitDirection)
+{
+	// 何も起きないので特に処理はなし。
+}

@@ -36,6 +36,9 @@ public:
 	//! @brief その土管が「入れるタイプ」かどうか
 	bool isEnterable() const;
 
+	//! @brief ブロックがヒットされた時のコールバック
+	void onHit(int hitDirection) override;
+
 private:
 	Float2 exitPos;	//! @brief ワープ出口座標
 	int pipeId;		//! @brief 土管識別ID（object idとは別）
