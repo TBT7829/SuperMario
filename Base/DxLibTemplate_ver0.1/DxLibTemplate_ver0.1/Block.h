@@ -31,6 +31,9 @@ public:
     //! @brief 描画処理
     virtual void render() override = 0;
 
+    //! @brief ブロックがヒットされた時のコールバック
+    virtual void onHit(int hitDirection) = 0;
+
     //! @brief 座標
     Float2 pos;
 	//! @brief サイズ

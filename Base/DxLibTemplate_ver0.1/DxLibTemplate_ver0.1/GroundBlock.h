@@ -24,6 +24,8 @@ public:
     //! @note Block クラス（Object クラス）から継承した純粋仮想関数をオーバーライド
     void render() override;
 
+    //! @brief ブロックがヒットされた時のコールバック
+    void onHit(int hitDirection) override;
 
     //! @brief 画像を保存する変数
     int image;

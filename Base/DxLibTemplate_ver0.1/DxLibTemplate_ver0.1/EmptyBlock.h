@@ -17,4 +17,7 @@ public:
 
 	//! @brief 描画
 	void render() override;
+
+	//! @brief ブロックがヒットされた時のコールバック
+	void onHit(int hitDirection) override;
 };

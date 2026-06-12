@@ -20,5 +20,5 @@ public:
 
 	//! @brief ヒット処理（外部から呼ばれる）
 	//! @param hitDirection 1=下から, 2=上から, 3=左から, 4=右から
-	void onHit(int hitDirection);
+	void onHit(int hitDirection) override;
 };

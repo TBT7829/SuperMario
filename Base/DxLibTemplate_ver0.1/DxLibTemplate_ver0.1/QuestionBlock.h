@@ -35,7 +35,7 @@ public:
 	//! @brief ブロックがヒットされた時のコールバック
 	//! @param hitDirection ヒット方向（1=下から, 2=上から, 3=左から, 4=右から）
 	//! @note CollisionManager から呼び出される
-	void onHit(int hitDirection);
+	void onHit(int hitDirection) override;
 
 private:
 	//! @brief アイテムが生成済みかどうか
