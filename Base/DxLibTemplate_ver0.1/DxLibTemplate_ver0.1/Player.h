@@ -63,13 +63,16 @@ public:
 	//! @brief プレイヤーの移動速度
 	Float2 movSpeed;
 
+	//! @brief プレイヤーの残機数
+	int m_life = 3;
+
 	//! @brief 移動状態を管理するステートマシン
 	StateMachine<Player> moveState;
 	//! @brief フォーム状態を管理するステートマシン
 	StateMachine<Player> formState;
 	//! @brief エフェクト状態を管理するステートマシン
 	StateMachine<Player> effectState;
-	// !@brief 姿勢状態を管理するステートマシン
+	//! @brief 姿勢状態を管理するステートマシン
 	StateMachine<Player> postureState;
 	
 private:

@@ -73,6 +73,17 @@ void Player::render()
 {
 	float drawX = Camera::getInstance().worldToScreenX(pos.x);
 	DrawBox(drawX, pos.y, drawX + size.x, pos.y + size.y, 0xFF0000, TRUE);
+
+
+	// 1. マネージャーから「立ち状態のマリオ」の画像ハンドルを取得
+	int marioGHandle = ImageManager::getInstance()->getHandle(ImageManager::IMAGE_PLAYER_IDLE);
+
+	// 2. 画面の指定した座標（例として X=100, Y=110）にマリオの画像を描画
+	DrawGraph(100, 110, marioGHandle, TRUE);
+
+	// 3. 画像のすぐ右側（X=120, Y=114）に、白文字で「x 残機数」を描画
+	// ※ m_life は Player.h に追加した変数です
+	DrawFormatString(120, 114, GetColor(255, 255, 255), "x %d", m_life);
 }
 
 //---------------------------------------------------------------------------------
