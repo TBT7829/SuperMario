@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "Camera.h"
 #include"Const.h"
-
+#include "ImageManager.h"
 #include<DxLib.h>
 #include<cmath>
 
@@ -73,6 +73,20 @@ void Player::render()
 {
 	float drawX = Camera::getInstance().worldToScreenX(pos.x);
 	DrawBox(drawX, pos.y, drawX + size.x, pos.y + size.y, 0xFF0000, TRUE);
+
+
+	// 1. マネージャーのインスタンスを取得
+	ImageManager* pIMGM = ImageManager::getInstance();
+
+	// 2. getHandle関数を使わず、定義されているIMAGE_PLAYER_IDLEを直接使って安全に描画します
+	// ※万が一エラーが出る場合は、一旦 0 などの数値を仮に入れて確認することも可能です
+	int marioGHandle = pIMGM->IMAGE_PLAYER_IDLE;
+
+	// 3. 画面の指定した座標にマリオの画像を描画（数値を明示的な整数にして警告を消します）
+	DrawGraph((int)100, (int)110, marioGHandle, TRUE);
+
+	// 4. 画像のすぐ右側に、白文字で「x 残機数」を描画（こちらも整数に固定）
+	DrawFormatString((int)120, (int)114, GetColor(255, 255, 255), "x %d", m_life);
 }
 
 //---------------------------------------------------------------------------------

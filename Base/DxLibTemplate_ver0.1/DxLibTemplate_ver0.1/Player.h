@@ -63,13 +63,16 @@ public:
 	//! @brief プレイヤーの移動速度
 	Float2 movSpeed;
 
+	//! @brief プレイヤーの残機数
+	int m_life = 3;
+
 	//! @brief 移動状態を管理するステートマシン
 	StateMachine<Player> moveState;
 	//! @brief フォーム状態を管理するステートマシン
 	StateMachine<Player> formState;
 	//! @brief エフェクト状態を管理するステートマシン
 	StateMachine<Player> effectState;
-	// !@brief 姿勢状態を管理するステートマシン
+	//! @brief 姿勢状態を管理するステートマシン
 	StateMachine<Player> postureState;
 	
 private:
@@ -101,7 +104,7 @@ private:
 	//! @brief 落下中の終了処理
 	void exitFall();
 
-
+	
 	//! @brief 小さい状態での更新処理
 	void updateLow();
 	//! @brief 大きい状態での更新処理
@@ -113,6 +116,6 @@ private:
 	bool isRun;
 	//! @brief プレイヤーの向き（LEFT = 左向き, RIGHT = 右向き）
 	DIRECTION direction;
-	// !@brief ジャンプ中の重力の強さ（ジャンプのホールド時間に応じて変化させるための変数）
+	//! @brief ジャンプ中の重力の強さ（ジャンプのホールド時間に応じて変化させるための変数）
 	float currentJumpGravity;
 };
