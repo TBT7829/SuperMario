@@ -48,6 +48,7 @@ void HiddenBlock::render()
 	int x2 = (int)(drawX + size.x);
 	int y2 = (int)(pos.y + size.y);
 
+<<<<<<< HEAD
 	//DrawGraph(drawX, y1, imgHandle, TRUE);
 
 	// まだアイテム未生成（隠し状態）：通常は描画しない（透明）
@@ -137,3 +138,13 @@ void HiddenBlock::spawnItem()
 	*/
 }
 
+=======
+	DrawGraph(drawX, y1, imgHandle, TRUE);
+}
+
+//! @brief ブロックがヒットされた時のコールバック実装
+void HiddenBlock::onHit(int hitDirection)
+{
+	// 後で処理を書きます
+}
+>>>>>>> 9ef37ef2cb22b7e96f47321853e3332edbfef40c
