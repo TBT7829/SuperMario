@@ -69,6 +69,8 @@ void HiddenBlock::render()
 	// 既にスポーン済み（空ブロック化）：EmptyBlock と視覚的に区別するため、薄い青緑系で描画
 	DrawBox(x1, y1, x2, y2, GetColor(160, 200, 200), TRUE);
 	DrawLineBox(x1, y1, x2, y2, GetColor(80, 120, 120));
+
+	DrawGraph(drawX, y1, imgHandle, TRUE);
 }
 
 //---------------------------------------------------------------------------------
