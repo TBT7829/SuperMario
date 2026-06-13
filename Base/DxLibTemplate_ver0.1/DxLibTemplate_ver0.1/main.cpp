@@ -16,6 +16,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ImageManager* pIMGM = ImageManager::getInstance();
 
 	SoundManager* pSM = SoundManager::getInstance();
+	
+	
 
 	SetGraphMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32);
 
@@ -47,7 +49,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	initKeyManager();
 	// ↑ システム初期化 ↑
 	//---------------------------------------
-	//　画像の読み込み
+	//　↓画像の読み込み↓
 	
 	// キャラなどのオブジェクト
 	pIMGM->setImageInfo(ImageManager::IMAGE_STAGE_BG_11, "world_bgonly_11.png");
@@ -56,9 +58,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	pIMGM->setImageInfo(ImageManager::IMAGE_GROUND_BLOCK_11, "ground_block_11.png");
 	pIMGM->setImageInfo(ImageManager::IMAGE_HARD_BLOCK, "hard_block.png");
 
+	
+
 
 	pIMGM->loadImageAll();
 
+	// ↓音声の読み込み↓
+	
+	pSM->setSoundInfo(SoundManager::SOUND_STAGE, "stage1_1.mp3");
 		
 	pSM->loadSoundAll();
 

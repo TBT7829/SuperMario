@@ -78,6 +78,8 @@ void Stage::update()
 
 	SoundManager* pSoundManager = SoundManager::getInstance();
 
+	
+
 	PlayerManager* pPM = PlayerManager::getInstance();
 
 	pOM->updateAll();
@@ -94,9 +96,18 @@ void Stage::update()
 		pSceneManager->changeScene(nextScene);
 	}
 
-	if (0 < nextScene) {
-		// ゲームセレクトへ
-		pSceneManager->changeScene(nextScene);
+	// サウンドの取得
+	int bgmHandle = pSoundManager->getSoundHandle(SoundManager::SOUND_STAGE);
+
+	// サウンドの再生（毎フレーム再生コールしないようにチェックしてから再生する）
+	if (bgmHandle != -1)
+	{
+		// DxLib の CheckSoundMem を使って現在再生中か確認する
+		// 再生中でなければループ再生を開始する
+		if (CheckSoundMem(bgmHandle) == 0)
+		{
+			PlaySoundMem(bgmHandle, DX_PLAYTYPE_LOOP);
+		}
 	}
 
 }
