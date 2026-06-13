@@ -52,21 +52,14 @@ void Title::update()
 	SceneManager* pSceneManager = SceneManager::getInstance();
 
 	SoundManager* pSoundManager = SoundManager::getInstance();
-	//PlaySoundMem(pSoundManager->getSoundHandle(SoundManager::SOUND_TITLE), DX_PLAYTYPE_LOOP, FALSE);
 
-	PlayerManager* pPM = PlayerManager::getInstance();
 
-	pOM->updateAll();
-
-	CollisionManager::getInstance()->updateCollision();
-
-	// プレイヤーの取得
-	Player* pPlayer = pPM->get();
-
-	Camera::getInstance().update(pPlayer->pos.x, WINDOW_WIDTH, STAGE_1_LENGTH);
+	if (CheckHitKey(KEY_INPUT_RETURN)) {
+		nextScene = SceneManager::SCENE_STAGE;
+	}
+	
 
 	if (0 < nextScene) {
-		// ゲームセレクトへ
 		pSceneManager->changeScene(nextScene);
 	}
 
@@ -76,7 +69,7 @@ void Title::update()
 //---------------------------------------------------------------------------------
 void Title::render()
 {
-	
+	DrawString(70, 112, "PUSH TO RETURN", 0xFFFFFF);
 }
 //---------------------------------------------------------------------------------
 //	終了処理

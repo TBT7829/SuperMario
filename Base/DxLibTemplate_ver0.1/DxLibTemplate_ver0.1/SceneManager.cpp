@@ -22,7 +22,7 @@ SceneManager::SceneManager()
 	nextType = SCENE_NONE;
 
 	// タイトルから始める
-	changeScene(SCENE_STAGE);
+	changeScene(SCENE_TITLE);
 }
 
 //---------------------------------------------------------------------------------
