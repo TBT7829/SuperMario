@@ -58,5 +58,5 @@ void Goomba::render()
         DrawBox(x1, y1, x2, y2, GetColor(255, 0, 0), TRUE);
     //}
 
-        printfDx("x:%f, y:%f", x1, y1);
+    //printfDx("x:%f, y:%f", x1, y1);
 }
