@@ -48,7 +48,6 @@ void HiddenBlock::render()
 	int x2 = (int)(drawX + size.x);
 	int y2 = (int)(pos.y + size.y);
 
-<<<<<<< HEAD
 	//DrawGraph(drawX, y1, imgHandle, TRUE);
 
 	// まだアイテム未生成（隠し状態）：通常は描画しない（透明）
@@ -70,6 +69,8 @@ void HiddenBlock::render()
 	// 既にスポーン済み（空ブロック化）：EmptyBlock と視覚的に区別するため、薄い青緑系で描画
 	DrawBox(x1, y1, x2, y2, GetColor(160, 200, 200), TRUE);
 	DrawLineBox(x1, y1, x2, y2, GetColor(80, 120, 120));
+
+	DrawGraph(drawX, y1, imgHandle, TRUE);
 }
 
 //---------------------------------------------------------------------------------
@@ -138,13 +139,3 @@ void HiddenBlock::spawnItem()
 	*/
 }
 
-=======
-	DrawGraph(drawX, y1, imgHandle, TRUE);
-}
-
-//! @brief ブロックがヒットされた時のコールバック実装
-void HiddenBlock::onHit(int hitDirection)
-{
-	// 後で処理を書きます
-}
->>>>>>> 9ef37ef2cb22b7e96f47321853e3332edbfef40c
