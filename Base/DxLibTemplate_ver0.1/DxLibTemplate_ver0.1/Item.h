@@ -13,7 +13,7 @@ public:
 	//! @param _id オブジェクトID
 	//! @param _itemType アイテムの種類
 	//! @param _pos アイテムの生成位置
-	Item(int _id, int _itemType, Float2 _pos);
+	Item(int _id, OBJECT_TYPE _itemType, Float2 _pos);
 
 	//! @brief デストラクタ
 	virtual ~Item();

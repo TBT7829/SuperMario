@@ -11,7 +11,7 @@ public:
     //! @param _objectType オブジェクトの種類
     //! @param _start ブロックの初期位置
     //! @param _size ブロックのサイズ
-    Block(int _id, int _objectType, Float2 _start, Float2 _size = {16.0f, 16.0f} ): Object(_id, _objectType)
+    Block(int _id, OBJECT_TYPE _objectType, Float2 _start, Float2 _size = {16.0f, 16.0f} ): Object(_id, _objectType)
     {
         pos.x = _start.x;
         pos.y = _start.y;

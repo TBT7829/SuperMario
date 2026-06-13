@@ -5,7 +5,7 @@
 //---------------------------------------------------------------------------------
 
 //! @brief コンストラクタ
-Item::Item(int _id, int _itemType, Float2 _pos)
+Item::Item(int _id, OBJECT_TYPE _itemType, Float2 _pos)
 	: Object(_id, _itemType)
 {
 	pos = _pos;
