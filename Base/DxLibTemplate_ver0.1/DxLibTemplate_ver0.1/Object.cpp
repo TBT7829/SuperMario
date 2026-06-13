@@ -9,7 +9,7 @@
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
-Object::Object(int _id, int _objectType)
+Object::Object(int _id, OBJECT_TYPE _objectType)
 {
 	// IDは引数で貰ったIDに
 	id = _id;
@@ -48,7 +48,7 @@ int Object::getObjectState()
 //---------------------------------------------------------
 // オブジェクトの型を取得する関数
 //---------------------------------------------------------
-int Object::getObjectType()
+OBJECT_TYPE Object::getObjectType()
 {
 	return objectType;
 }

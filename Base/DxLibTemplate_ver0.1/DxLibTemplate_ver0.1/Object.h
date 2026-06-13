@@ -47,7 +47,7 @@ public:
 
 	//! @brief コンストラクタ(オブジェクトが生成された時に自動的に呼ばれる関数)
 	//! @param id 
-	Object(int id, int objectType);
+	Object(int id, OBJECT_TYPE objectType);
 
 	//! @brief デストラクタ(オブジェクトが削除された時、あるいはプログラムの終了時に自動的に呼ばれる関数)
 	//! @brief virtualをつけてアップキャスト(子クラスから親クラスへの型変換)したときに
@@ -64,7 +64,7 @@ public:
 
 	//! @brief オブジェクトの型の取得
 	//! @return オブジェクトの型(objectType)
-	int getObjectType();
+	OBJECT_TYPE getObjectType();
 
 	//! @brief 初回起動時に実行される処理を動かす関数
 	//! @brief 内部で状態をACTIVE(動作中)にする
@@ -114,5 +114,5 @@ private:
 	int objectState;
 
 	//! @brief オブジェクトの型
-	int objectType;
+	OBJECT_TYPE objectType;
 };

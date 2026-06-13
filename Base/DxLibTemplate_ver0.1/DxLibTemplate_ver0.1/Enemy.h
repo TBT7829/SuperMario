@@ -11,7 +11,7 @@ public:
     //! @param _objectType オブジェクトの種類
     //! @param _start エネミーの初期位置
     //! @param _size エネミーのサイズ
-    Enemy(int _id, int _objectType, Float2 _start, Float2 _size = {16.0f, 16.0f}): Object(_id, _objectType)
+    Enemy(int _id, OBJECT_TYPE _objectType, Float2 _start, Float2 _size = {16.0f, 16.0f}): Object(_id, _objectType)
     {
         pos = _start;
         size.x = _size.x;

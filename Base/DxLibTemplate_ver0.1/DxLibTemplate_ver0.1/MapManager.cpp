@@ -13,6 +13,8 @@
 #include "HardBlock.h"
 #include "Pipe.h"
 
+#include "Goomba.h"
+
 #include"Const.h"
 #include "CommonFunc.h"
 #include<DxLib.h>
@@ -304,7 +306,17 @@ void MapManager::createStage(int mapData[MAP_ROW][MAP_COL], int stageWidth)
             break;
             case GOOMBA: // ƒNƒŠƒ{[
             {
-
+                Goomba* pGoomba = new Goomba(pOM->generateId(), pixel);
+                if (pEM->Add(pGoomba) == false)
+                {
+                    delete pGoomba;
+                    MY_ABORT();
+                }
+                if (pOM->add(pGoomba) == false)
+                {
+                    delete pGoomba;
+                    MY_ABORT();
+                }
             }
             break;
             default:

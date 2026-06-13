@@ -14,6 +14,8 @@
 #include "CoinBlock.h"
 #include "Pipe.h"
 #include "BrickBlock.h"
+#include"Enemy.h"
+#include"Goomba.h"
 
 #include "Const.h"
 #include "HitFunc.h"
@@ -27,6 +29,7 @@ void CollisionManager::updateCollision()
 {
 	PlayerManager* pPM = PlayerManager::getInstance();
 	BlockManager* pBM = BlockManager::getInstance();
+	EnemyManager* pEM = EnemyManager::getInstance();
 	MapManager* pMM = MapManager::getInstance();
 	Player* pPlayer = pPM->get();
 
@@ -134,8 +137,132 @@ void CollisionManager::updateCollision()
 		}
 
 		
-	}
+	} //プレイヤーとブロックの当たり判定
+
+	// プレイヤーとエネミーの当たり判定
+	for (int e = 0; e < ENEMY_MAX; e++) {
+		Enemy* pEnemy = pEM->pEnemyArray[e];
+		if (pEnemy == nullptr) continue;
+
+		// A(プレイヤー) と B(エネミー) の当たり判定
+		CollisionInfo ci = detectCollision(pPlayer->pos, pPlayer->size, pEnemy->pos, pEnemy->size);
+
+		// 当たっていなければ次へ
+		if (!ci.isHit) continue;
+
+		// 衝突方向ごとに処理
+		switch (ci.side) {
+		case TOP:
+			// プレイヤーがエネミーの上に立った
+		{
+			float collectY = pEnemy->pos.y - pPlayer->size.y;
+			pPlayer->pos.y = collectY;
+			// 落下速度をキャンセル
+			pPlayer->movSpeed.y = 0.0f;
+			// 着地処理（状態遷移など）
+			pPlayer->onLand(pEnemy->pos.y);
+		}
+		break;
+
+		case BOTTOM:
+			// プレイヤーがブロックの下から当たった(頭打ち)
+		{
+			// 最小分離ベクトルで位置補正（上方向へ押し戻す）
+			pPlayer->pos.y += ci.penetration.y;
+			// 上向き速度が残っているならキャンセルして貫通を防ぐ
+			if (pPlayer->movSpeed.y < 0.0f) {
+				pPlayer->movSpeed.y = 0.0f;
+			}
+
+			
+			
+		}
+		break;
+
+		case LEFT:
+		case RIGHT:
+			// 横方向の押し戻し（壁にめり込んだ場合の補正）
+		{
+			pPlayer->pos.x += ci.penetration.x;
+			// 水平方向の速度がブロックへの方向に残っていると貫通の原因になるのでキャンセル
+			// penetration.x は A を押し戻す方向の値になっている（符号付き）
+			// movSpeed.x と penetration が逆符号ならプレイヤーがブロックに突っ込んだ状態なので速度をゼロにする
+			if ((ci.side == LEFT && pPlayer->movSpeed.x > 0.0f) ||
+				(ci.side == RIGHT && pPlayer->movSpeed.x < 0.0f)) {
+				pPlayer->movSpeed.x = 0.0f;
+			}
+
+			// クリボー
+			if (pEnemy->getObjectType() == GOOMBA) {
+				Goomba* pGoomba = (Goomba*)pEnemy;
+				pGoomba->moveSpeed *= -1;
+			}
+
+		}
+		break;
+
+		default:
+			break;
+		}
+
+
+	} //プレイヤーとエネミーの当たり判定
 	
+
+	// ブロックとエネミーの当たり判定
+	for (int b = 0; b < BLOCK_MAX; b++) {
+		Block* pBlock = pBM->pBlockArray[b];
+
+		if (pBlock == nullptr || !pBlock->isSolid) continue;
+
+		for (int e = 0; e < ENEMY_MAX; e++) {
+			Enemy* pEnemy = pEM->pEnemyArray[e];
+
+			if (pEnemy == nullptr) continue;
+
+			// A(ブロック) と B(エネミー) の当たり判定
+			CollisionInfo ci = detectCollision(pBlock->pos, pBlock->size, pEnemy->pos, pEnemy->size);
+
+			// 当たっていなければ次へ
+			if (!ci.isHit) continue;
+
+			// 衝突方向ごとに処理
+			switch (ci.side) {
+			case TOP:
+				// 上
+			{
+				
+			}
+			break;
+
+			case BOTTOM:
+				// 下
+			{
+
+			}
+			break;
+
+			case LEFT:
+			case RIGHT:
+				// 横方向
+			{
+
+				// クリボー
+				if (pEnemy->getObjectType() == GOOMBA) {
+					Goomba* pGoomba = (Goomba*)pEnemy;
+					pGoomba->moveSpeed *= -1;
+				}
+			}
+			break;
+
+			default:
+				break;
+			}
+
+
+		} 
+
+	} // エネミーとブロックの当たり判定
 }
 
 
