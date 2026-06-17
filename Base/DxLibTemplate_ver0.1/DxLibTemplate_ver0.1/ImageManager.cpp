@@ -39,6 +39,9 @@ void ImageManager::initImageManager()
 		pImageInfo->imageHandle = -1;
 		pImageInfo->imagePath = nullptr;
 	}
+
+	
+	setImageInfo(IMAGE_KOOPA_WALK, "turtle_walk.png");
 }
 
 //---------------------------------------------------------------------------------

@@ -15,6 +15,7 @@ enum OBJECT_TYPE {
 	SUPER_MUSHROOM,
 	FIRE_FLOWER,
 	GOOMBA,
+	KOOPA_TROOPA,
 };
 
 // 全てのオブジェクト(キャラや地形、弾など)に

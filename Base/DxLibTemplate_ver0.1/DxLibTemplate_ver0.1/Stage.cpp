@@ -9,6 +9,7 @@
 #include "MapManager.h"
 #include "CollisionManager.h"
 #include "mapdata.h"
+#include "KoopaTroopa.h"
 #include <DxLib.h>
 
 
@@ -65,6 +66,9 @@ void Stage::init()
 
 	// 次のシーンは未設定(-1)にしておく
 	nextScene = -1;
+
+	KoopaTroopa* pKoopaTroopa = new KoopaTroopa(400.0f, 150.0f);
+	pOM->add(pKoopaTroopa);
 }
 //---------------------------------------------------------------------------------
 //	更新処理

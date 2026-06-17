@@ -40,6 +40,8 @@ public:
 		IMAGE_HIDDEN_BLOCK,
 		IMAGE_BRICK_BLOCK,
 
+		IMAGE_KOOPA_WALK, 
+
 		IMAGE_MAX,
 	};
 
