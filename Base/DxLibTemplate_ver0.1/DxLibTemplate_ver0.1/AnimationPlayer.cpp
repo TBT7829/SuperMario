@@ -35,22 +35,24 @@ int AnimationPlayer::getCurrentAnimationNumber()
 // 再生するアニメーションの変更
 void AnimationPlayer::changeAnimation(int no)
 {
-	// 指定された番号は正常なものかチェック
-	if (pAnimDataSet == NULL && !pAnimDataSet->isAnimationDataNoValid(no))
-	{
-		// 異常ならここで弾く
-		return;
-	}
+    // 指定された番号が有効かチェック。データセットが無いか、番号が不正なら何もしない。
+    if (pAnimDataSet == NULL || !pAnimDataSet->isAnimationDataNoValid(no))
+    {
+        return;
+    }
 
-	animNo = no;
-	animIdx = 0;
-	wait = 0;
-	state = AnimationPlayerState::AP_PLAY;
+    animNo = no;
+    animIdx = 0;
+    wait = 0;
+    state = AnimationPlayerState::AP_PLAY;
 }
 
 void AnimationPlayer::update()
 {
-	// アニメーションが再生中かどうか
+    // アニメーションデータセットが無ければ何もしない
+    if (pAnimDataSet == NULL) return;
+
+    // アニメーションが再生中かどうか
 	if (state != AnimationPlayerState::AP_PLAY)
 	{
 		// 再生中ではないので更新せずに抜ける
@@ -126,30 +128,35 @@ void AnimationPlayer::render()
 
 // 相対座標で表示
 // (こちらは基準となる座標を貰うので、その座標を基準として、つまり相対座標で表示を行う)
-void AnimationPlayer::render(int baseX, int baseY)
+void AnimationPlayer::render(int baseX, int baseY, bool turnFlag)
 {
 	
 
 	// 自分の座標を相対座標として扱い、引数に貰った基準となる座標を加えて絶対座標に変換する
 	//DrawGraph(x + baseX, y + baseY, imageArray[imgId], TRUE);
+    // DxLib の回転・拡大描画。turnFlag が true の場合は反転して描画する。
+    // Top-left 基準で描画する（DxLib の DrawGraph / DrawTurnGraph を使用）
+	/*
 	DrawRotaGraph
 	(
 		x + baseX, y + baseY,
 		IMAGE_RATE, 0.0f,
-		imgId, TRUE
+		imgId, turnFlag ? TRUE : FALSE
 	);
+	*/
+
+    if (turnFlag) {
+        // 水平反転付き描画（トップレフト基準）
+        DrawTurnGraph(x + baseX, y + baseY, imgId, TRUE);
+    }
+    else {
+        DrawGraph(x + baseX, y + baseY, imgId, TRUE);
+    }
 
 	/*
-	// デバッグ表示
-	printfDx("pAnimDataSet: %llu\n", pAnimDataSet);
-	printfDx("imgId: %d\n", imgId);
-	printfDx("wait: %d\n", wait);
-	printfDx("animIdx: %d\n", animIdx);
-	printfDx("animNo: %d\n", animNo);
-	printfDx("state: %d\n", state);
-	printfDx("cropX: %d\n", cropX);
-	printfDx("cropY: %d\n", cropY);
-	printfDx("cropW: %d\n", cropW);
-	printfDx("cropH: %d\n", cropH);
+	#ifdef IS_DEBUG
+	// デバッグ表示: アニメーション状態を出力
+	printfDx("animNo: %d imgId: %d wait: %d animIdx: %d state: %d\n", animNo, imgId, wait, animIdx, state);
+	#endif
 	*/
 }

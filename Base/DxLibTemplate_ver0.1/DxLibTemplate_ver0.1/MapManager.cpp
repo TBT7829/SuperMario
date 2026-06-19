@@ -35,6 +35,23 @@ MapManager::MapManager()
 
 }
 
+float MapManager::getGroundYAtWorldX(float worldX) const
+{
+    int col = static_cast<int>(worldX) / BLOCK_SIZE;
+    if (col < 0 || col >= MAP_COL) return MAP_ROW * BLOCK_SIZE;
+
+    // 上から下へ検索して最初に見つかる固体ブロックの上端を返す
+    for (int row = 0; row < MAP_ROW; ++row) {
+        int val = mapArray[row][col];
+        if (val >= 0) {
+            // ブロックが存在するので、その上端Yを返す
+            return static_cast<float>(row * BLOCK_SIZE);
+        }
+    }
+    // ブロックが見つからない
+    return MAP_ROW * BLOCK_SIZE;
+}
+
 //---------------------------------------------------------------------------------
 //	デストラクタ
 //---------------------------------------------------------------------------------

@@ -46,7 +46,8 @@ public:
 	void render();
 	// 相対座標で表示
 	// (こちらは基準となる座標を貰うので、その座標を基準として、つまり相対座標で表示を行う)
-	void render(int baseX, int baseY);
+	// turnFlag: true なら左右反転して描画する
+	void render(int baseX, int baseY, bool turnFlag = false);
 
 	inline void setAds(AnimationDataSet* _pAnimDataSet)
 	{

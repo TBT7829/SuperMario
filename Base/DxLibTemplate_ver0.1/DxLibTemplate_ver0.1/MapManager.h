@@ -45,4 +45,9 @@ public:
 	//! @brief 現在のステージの幅
 	int currentStageWidth;
 
+    //! @brief 指定ワールドX座標の列における最上位の固体ブロックのY座標を返す
+    //! @param worldX 世界座標のX
+    //! @return ブロックの上端Y座標(ピクセル)。ブロックがなければ MAP_ROW*BLOCK_SIZE を返す。
+    float getGroundYAtWorldX(float worldX) const;
+
 };

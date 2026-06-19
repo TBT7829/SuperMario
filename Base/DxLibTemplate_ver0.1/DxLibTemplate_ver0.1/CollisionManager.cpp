@@ -33,13 +33,25 @@ void CollisionManager::updateCollision()
 	MapManager* pMM = MapManager::getInstance();
 	Player* pPlayer = pPM->get();
 
+	// 衝突判定を始める前に、一旦プレイヤーの接地フラグを偽（床なし）にする
+	if (pPlayer != nullptr) {
+		pPlayer->isGrounded = false;
+	}
+
+	Float2 colPlayerPos = pPlayer->pos;
+	colPlayerPos.x += 2;
+
 	// プレイヤーと当たり判定
 	for (int b = 0; b < BLOCK_MAX; b++) {
 		Block* pBlock = pBM->pBlockArray[b];
 		if (pBlock == nullptr || !pBlock->isSolid) continue;
 
+		// ループ内で、常に最新の押し戻し後座標をベースに判定用座標を作る！
+		Float2 colPlayerPos = pPlayer->pos;
+		colPlayerPos.x += 2;
+
 		// A(プレイヤー) と B(ブロック) の当たり判定
-		CollisionInfo ci = detectCollision(pPlayer->pos, pPlayer->size, pBlock->pos, pBlock->size);
+		CollisionInfo ci = detectCollision(colPlayerPos, pPlayer->size, pBlock->pos, pBlock->size);
 
 		// 当たっていなければ次へ
 		if (!ci.isHit) continue;
@@ -144,8 +156,12 @@ void CollisionManager::updateCollision()
 		Enemy* pEnemy = pEM->pEnemyArray[e];
 		if (pEnemy == nullptr) continue;
 
+		// ループ内で、常に最新の押し戻し後座標をベースに判定用座標を作る！
+		Float2 colPlayerPos = pPlayer->pos;
+		colPlayerPos.x += 2;
+
 		// A(プレイヤー) と B(エネミー) の当たり判定
-		CollisionInfo ci = detectCollision(pPlayer->pos, pPlayer->size, pEnemy->pos, pEnemy->size);
+		CollisionInfo ci = detectCollision(colPlayerPos, pPlayer->size, pEnemy->pos, pEnemy->size);
 
 		// 当たっていなければ次へ
 		if (!ci.isHit) continue;
@@ -153,14 +169,16 @@ void CollisionManager::updateCollision()
 		// 衝突方向ごとに処理
 		switch (ci.side) {
 		case TOP:
-			// プレイヤーがエネミーの上に立った
+			// プレイヤーがエネミーを踏んづけた
 		{
-			float collectY = pEnemy->pos.y - pPlayer->size.y;
-			pPlayer->pos.y = collectY;
-			// 落下速度をキャンセル
-			pPlayer->movSpeed.y = 0.0f;
-			// 着地処理（状態遷移など）
-			pPlayer->onLand(pEnemy->pos.y);
+			// 位置を敵の頭の上に補正
+			pPlayer->pos.y = pEnemy->pos.y - pPlayer->size.y;
+
+			// 上方向にポーンと跳ね返らせる速度を与える
+			pPlayer->movSpeed.y = -4.5f;
+
+			// 状態は着地ではなく、空中（FALL または JUMP）のままにする
+			pPlayer->moveState.change(Player::JUMP);
 		}
 		break;
 
@@ -297,8 +315,8 @@ CollisionManager::CollisionInfo CollisionManager::detectCollision(const Float2& 
 	float overlapX = min(right1, right2) - max(left1, left2);
 	float overlapY = min(bottom1, bottom2) - max(top1, top2);
 
-	// 重なり幅が正の値であれば衝突している
-	if (overlapX <= 0.0f || overlapY <= 0.0f) {
+	// 重なり幅が正の値であれば衝突している。接触(重なり==0)も当たりとして扱うため <= から < に変更
+	if (overlapX < 0.0f || overlapY < 0.0f) {
 		// 衝突なし
 		return info;
 	}

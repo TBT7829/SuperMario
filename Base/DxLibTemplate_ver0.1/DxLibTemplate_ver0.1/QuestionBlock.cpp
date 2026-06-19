@@ -6,6 +6,7 @@
 #include "SuperMushroom.h"
 #include "FireFlower.h"
 #include"CommonFunc.h"
+#include "CollisionManager.h"
 #include <DxLib.h>
 
 //---------------------------------------------------------------------------------
@@ -71,7 +72,7 @@ void QuestionBlock::onHit(int hitDirection)
 	}
 
 	// 下からのヒット（プレイヤーがジャンプして下から衝突）の場合のみアイテムを生成
-	if (hitDirection == 1)
+	if (hitDirection == CollisionManager::BOTTOM)
 	{
 		spawnItem();
 		hasSpawned = true;

@@ -5,6 +5,7 @@
 #include "CommonFunc.h"
 #include "ObjectManager.h"
 #include "soundManager.h"
+#include"AnimationRepository.h"
 #include <DxLib.h>
 
 
@@ -50,6 +51,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//　画像の読み込み
 	
 	// キャラなどのオブジェクト
+	pIMGM->setImageInfo(ImageManager::IMAGE_MINI_MARIO, "mini_mario.png");
+	pIMGM->setImageInfo(ImageManager::IMAGE_BIG_MARIO, "big_mario.png");
+	pIMGM->setImageInfo(ImageManager::IMAGE_FIRE_MARIO_STOP, "fire_mario_stop.png");
+	pIMGM->setImageInfo(ImageManager::IMAGE_FIRE_MARIO_WALK, "fire_mario_walk.png");
+	pIMGM->setImageInfo(ImageManager::IMAGE_FIRE_MARIO_JUMP, "fire_mario_jump.png");
+	pIMGM->setImageInfo(ImageManager::IMAGE_FIRE_MARIO_DOWN, "fire_mario_down.png");
+	pIMGM->setImageInfo(ImageManager::IMAGE_FIRE_MARIO_DASH, "fire_mario_dash.png");
+	pIMGM->setImageInfo(ImageManager::IMAGE_FIRE_MARIO_ATTACK, "fire_mario_attack.png");
+
+
+
 	pIMGM->setImageInfo(ImageManager::IMAGE_STAGE_BG_11, "world_bgonly_11.png");
 	//pIMGM->setImageInfo(ImageManager::IMAGE_STAGE_BG_11, "world_11.png");
 
@@ -61,6 +73,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	pIMGM->loadImageAll();
 
+	AnimationRepository::getInstance()->initAnimationRepository();
 		
 	pSM->loadSoundAll();
 

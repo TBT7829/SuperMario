@@ -3,6 +3,7 @@
 #include "Object.h"
 #include "Float2.h"
 #include "StateMachine.h"
+#include "AnimationPlayer.h"
 
 //! @brief プレイヤーキャラクターを表すクラス
 //! 移動状態、形態（フォーム）、エフェクト状態をステートマシンで管理
@@ -63,6 +64,9 @@ public:
 	//! @brief プレイヤーの移動速度
 	Float2 movSpeed;
 
+	// 外部（CollisionManager）から接地状態を書き換えるためのフラグ
+	bool isGrounded;
+
 	//! @brief プレイヤーの残機数
 	int m_life = 3;
 
@@ -110,6 +114,12 @@ private:
 	//! @brief 大きい状態での更新処理
 	void updateTall();
 
+	// 各種状態からアニメーションNoを選び取って再生機を回す関数
+	void updateAnimation();
+
+	// アニメーション再生機インスタンス
+	AnimationPlayer m_pAnimPlayer;
+
 	//! @brief // ジャンプのホールド時間をカウントする変数
 	int jumpHoldCounter; 
 	//! @brief 走り状態の維持フラグ（シフトが押されている間は走り状態を維持する）
@@ -118,4 +128,9 @@ private:
 	DIRECTION direction;
 	//! @brief ジャンプ中の重力の強さ（ジャンプのホールド時間に応じて変化させるための変数）
 	float currentJumpGravity;
+
+	
+
+	
+
 };

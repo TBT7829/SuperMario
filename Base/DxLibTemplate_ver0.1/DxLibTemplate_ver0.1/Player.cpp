@@ -2,8 +2,11 @@
 #include "Camera.h"
 #include"Const.h"
 #include "ImageManager.h"
+#include "AnimationRepository.h"
+#include "AnimationPlayer.h"
 #include<DxLib.h>
 #include<cmath>
+#include "MapManager.h"
 
 //---------------------------------------------------------------------------------
 //	プレイヤーの処理
@@ -12,14 +15,17 @@
 //---------------------------------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------------------------------
-Player::Player(int _id) : Object(_id, PLAYER)
+Player::Player(int _id) : Object(_id, PLAYER), m_pAnimPlayer(AnimationRepository::getInstance()->getAds(AnimationRepository::AOT_MARIO), 0, 0)
 {
-	pos.x = 100.0f;
-	pos.y = 50.0f;
-	size.x = size.y = 16.0f;
+    pos.x = 100.0f;
+	size.x = 12.0f;
+	size.y = 16.0f;
+	// 初期位置を地面の上に設定して落下しないようにする
+	pos.y = (MAP_ROW - 3) * BLOCK_SIZE - size.y; // 地面の一つ上に立たせる
 	movSpeed.x = 0.0f;
 	movSpeed.y = 0;
 	jumpHoldCounter = 0;
+	isGrounded = true;
 	isRun = false;
 	direction = RIGHT;
 	currentJumpGravity = PLAYER_GRAVITY;
@@ -31,7 +37,30 @@ Player::Player(int _id) : Object(_id, PLAYER)
 	moveState.add(JUMP, &Player::initJump, &Player::updateJump, &Player::exitJump);
 	moveState.add(FALL, &Player::initFall, &Player::updateFall, &Player::exitFall);
 
-	moveState.change(FALL);
+	// moveState.change(FALL);
+    // 初期は地上状態にしてアニメーションが動くようにする
+    moveState.change(GROUND);
+
+    // フォーム・姿勢・エフェクトのステート登録と初期化
+    formState.add(LOW, nullptr, &Player::updateLow, nullptr);
+    formState.add(TALL, nullptr, &Player::updateTall, nullptr);
+    formState.add(FIRE, nullptr, &Player::updateTall, nullptr);
+    formState.change(LOW);
+
+    postureState.add(STAND, nullptr, nullptr, nullptr);
+    postureState.add(SNEAK, nullptr, nullptr, nullptr);
+    postureState.change(STAND);
+
+    effectState.add(NORMAL, nullptr, nullptr, nullptr);
+    effectState.add(STAR, nullptr, nullptr, nullptr);
+    effectState.change(NORMAL);
+
+	// -------------------------------------------------------------
+	//  アニメーション再生機の初期化
+	// -------------------------------------------------------------
+    AnimationDataSet* pMarioAds = AnimationRepository::getInstance()->getAds(AnimationRepository::AOT_MARIO);
+    
+    m_pAnimPlayer.changeAnimation(AnimationRepository::A_MARIO_LOW_IDLE);
 }
 
 //---------------------------------------------------------------------------------
@@ -63,7 +92,94 @@ void Player::update()
 	formState.update(this);
 	effectState.update(this);
 
-	pos.x = max(Camera::getInstance().getOffsetX(), pos.x);
+	pos.x = min(max(Camera::getInstance().getOffsetX(), pos.x), Camera::getInstance().getOffsetX() + WINDOW_WIDTH - 14);
+
+	// 各種内部フラグと物理速度から適切なスクリプトを呼び出してタイマーを1進める
+	updateAnimation();
+}
+
+//---------------------------------------------------------------------------------
+// アニメーション選定ロジック（マリオの状態から前回の再生機へ反映させる）
+//---------------------------------------------------------------------------------
+void Player::updateAnimation()
+{
+	int targetAnimNo = -1;
+
+	// 急ブレーキ切り返し入力判定
+	bool isBraking = false;
+	if (movSpeed.x > 0.5f && CheckHitKey(KEY_INPUT_A))  isBraking = true;
+	if (movSpeed.x < -0.5f && CheckHitKey(KEY_INPUT_D)) isBraking = true;
+
+	int currentForm = formState.getStateId();
+	int currentMove = moveState.getStateId();
+	int currentPosture = postureState.getStateId();
+
+	if (currentForm == LOW) // チビ
+	{
+		if (currentMove == JUMP || currentMove == FALL) {
+			targetAnimNo = AnimationRepository::A_MARIO_LOW_JUMP;
+		}
+		else if (isBraking) {
+			targetAnimNo = AnimationRepository::A_MARIO_LOW_BRAKE;
+		}
+		else if (currentMove == RUNNING || (currentMove == GROUND && fabsf(movSpeed.x) > 0.1f)) {
+			targetAnimNo = AnimationRepository::A_MARIO_LOW_WALK;
+		}
+		else {
+			targetAnimNo = AnimationRepository::A_MARIO_LOW_IDLE;
+		}
+	}
+	else if (currentForm == TALL) // デカ
+	{
+		if (currentPosture == SNEAK) {
+			targetAnimNo = AnimationRepository::A_MARIO_TALL_SNEAK;
+		}
+		else if (currentMove == JUMP || currentMove == FALL) {
+			targetAnimNo = AnimationRepository::A_MARIO_TALL_JUMP;
+		}
+		else if (isBraking) {
+			targetAnimNo = AnimationRepository::A_MARIO_TALL_BRAKE;
+		}
+		else if (currentMove == RUNNING || (currentMove == GROUND && fabsf(movSpeed.x) > 0.1f)) {
+			targetAnimNo = AnimationRepository::A_MARIO_TALL_WALK;
+		}
+		else {
+			targetAnimNo = AnimationRepository::A_MARIO_TALL_IDLE;
+		}
+	}
+	else if (currentForm == FIRE) // ファイア
+	{
+		if (currentPosture == SNEAK) {
+			targetAnimNo = AnimationRepository::A_MARIO_FIRE_SNEAK;
+		}
+		else if (currentMove == JUMP || currentMove == FALL) {
+			targetAnimNo = AnimationRepository::A_MARIO_FIRE_JUMP;
+		}
+		else if (isBraking) {
+			targetAnimNo = AnimationRepository::A_MARIO_FIRE_BRAKE;
+		}
+		else if (currentMove == RUNNING || (currentMove == GROUND && fabsf(movSpeed.x) > 0.1f)) {
+			targetAnimNo = AnimationRepository::A_MARIO_FIRE_WALK;
+		}
+		else {
+			targetAnimNo = AnimationRepository::A_MARIO_FIRE_IDLE;
+		}
+	}
+
+	// 指定のアニメーションキーに変化があれば命令スクリプトを差し替える
+	if (targetAnimNo != m_pAnimPlayer.getCurrentAnimationNumber() && targetAnimNo != -1)
+	{
+		m_pAnimPlayer.changeAnimation(targetAnimNo);
+	}
+
+	// スクリプトタイマー更新（ウェイト値減少、画像ID切り替えループを解釈）
+	m_pAnimPlayer.update();
+
+	// 移動ステートがRUNNING（ダッシュ）であれば、もう1段階更新処理を進めて2倍速にする
+	if (currentMove == RUNNING && targetAnimNo != -1)
+	{
+		m_pAnimPlayer.update();
+	}
 }
 
 //---------------------------------------------------------------------------------
@@ -72,8 +188,44 @@ void Player::update()
 void Player::render()
 {
 	float drawX = Camera::getInstance().worldToScreenX(pos.x);
-	DrawBox(drawX, pos.y, drawX + size.x, pos.y + size.y, 0xFF0000, TRUE);
+	float drawY = pos.y;
 
+	// デカマリオ・ファイアマリオは画像サイズが縦に32pxあり、
+	// チビ基準の当たり判定サイズ(16px)のまま地面に立たせるため、上方に16px描画位置をオフセットする
+	if (formState.getStateId() == TALL || formState.getStateId() == FIRE)
+	{
+		drawY -= 16.0f;
+	}
+
+	// -------------------------------------------------------------
+	//  アニメーション再生機内部での描画（左右反転対応仕様）
+	// -------------------------------------------------------------
+	// `AnimationPlayer::render(int baseX, int baseY)` は内部で `DrawRotaGraph` を呼び出しています。
+	// direction == LEFT のとき、第6引数（TurnFlag）をTRUEにして画像を描画させるために、
+	// 既存の AnimationPlayer のメンバ変数を汚さず、直接描画位置を反映させ、
+	// 左向きの場合のみDxLib標準の反転フラグを仕掛けた「相対座標描画」を自前でシミュレートさせます。
+	int finalX = static_cast<int>(drawX) + m_pAnimPlayer.x;
+	int finalY = static_cast<int>(drawY) + m_pAnimPlayer.y;
+
+
+	if (direction == RIGHT) {
+		m_pAnimPlayer.render(static_cast<int>(drawX), static_cast<int>(drawY), false);
+	}
+	else if (direction == LEFT) {
+		m_pAnimPlayer.render(static_cast<int>(drawX), static_cast<int>(drawY), true);
+	}
+	
+	// デバッグ: 実際の当たり判定矩形（world pos と size を用いる）を赤で表示
+	// 注意: pos はワールド左上座標、スクリーンYはそのまま pos.y（カメラは X 軸のみ移動）
+	/*
+	int screenLeft = static_cast<int>(Camera::getInstance().worldToScreenX(pos.x));
+	int screenTop = static_cast<int>(pos.y);
+	int screenRight = screenLeft + static_cast<int>(size.x);
+	int screenBottom = screenTop + static_cast<int>(size.y);
+	DrawLineBox(screenLeft, screenTop, screenRight, screenBottom, GetColor(255, 0, 0));
+	// 目印として中心点も描画
+	DrawPixel(screenLeft + static_cast<int>(size.x * 0.5f), screenTop + static_cast<int>(size.y * 0.5f), GetColor(255, 0, 0));
+	*/
 
 #if 0
 	// マネージャーのインスタンスを取得
@@ -102,6 +254,8 @@ void Player::onLand(float groundY)
 
 	// ジャンプ保持カウンタをリセット
 	jumpHoldCounter = 0;
+
+	isGrounded = true;
 
 	// 移動ステートを GROUND に変更
 	moveState.change(GROUND);
@@ -197,10 +351,16 @@ void Player::updateGround()
 	// x座標の位置更新
 	pos.x += movSpeed.x;
 
+    // NOTE: 本来は CollisionManager による判定で GROUND/FALL を切り替えるが
+    // 現状は衝突判定が未実装のため、無条件で FALL に遷移すると常に落下扱いになり
+    // 歩行アニメーション等が再生されなくなる。ここでは自動遷移は行わない。
+	
 	// 着地判定がないので、とりあえず常にFALLへ移行する予備判定を入れる
-    // 実際にはCollisionManagerで「床に触れていたらGROUND」にする
-    // ここでは「床に触れていないならFALLへ遷移」という仕組みを作る
-	moveState.change(FALL);
+	// 実際にはCollisionManagerで「床に触れていたらGROUND」にする
+	// ここでは「床に触れていないならFALLへ遷移」という仕組みを作る
+	if (!isGrounded) {
+		moveState.change(FALL);
+	}
 
 	// ジャンプ
 	if (CheckHitKey(KEY_INPUT_SPACE)) {
@@ -302,8 +462,10 @@ void Player::updateRunning()
 	// 位置更新
 	pos.x += movSpeed.x;
 
-	// FALLに遷移(CollisionManager が実際の判定をする)
-	moveState.change(FALL);
+	if (!isGrounded) {
+		// FALLに遷移(CollisionManager が実際の判定をする)
+		moveState.change(FALL);
+	}
 
 	// ジャンプ入力
 	if (CheckHitKey(KEY_INPUT_SPACE)) {

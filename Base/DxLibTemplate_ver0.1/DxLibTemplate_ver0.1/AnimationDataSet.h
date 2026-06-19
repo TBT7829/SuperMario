@@ -6,7 +6,9 @@
 class AnimationDataSet
 {
 private:
-	static const int ANIMATION_DATA_NUM = 8;
+    // AnimationRepository で定義されるアニメーション番号を格納できるように
+    // 十分な数を確保しておく。マリオ用で14個程度使うため余裕を持たせて16に設定。
+    static const int ANIMATION_DATA_NUM = 16;
 
 public:
 	// 指定した番号のアニメーション情報を取得

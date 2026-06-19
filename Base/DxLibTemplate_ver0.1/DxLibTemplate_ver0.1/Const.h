@@ -51,16 +51,16 @@ const float PLAYER_WALK_SPEED_MAX = 2.0f;
 //! @brief プレイヤーの走り最高速度
 const float PLAYER_RUN_SPEED_MAX = 4.0f;
 //! @brief プレイヤーの重力
-const float PLAYER_GRAVITY = 0.5f;
+const float PLAYER_GRAVITY = 0.4f;
 //! @brief プレイヤーの最高落下速度
 const float PLAYER_FALL_SPEED_MAX = 8.0f;
 //! @brief プレイヤーのジャンプ初速
-const float PLAYER_INITIAL_JUMP_SPEED = -5.0f;
+const float PLAYER_INITIAL_JUMP_SPEED = -5.2f;
 //! @brief ジャンプ保持フレーム上限数
-const int   PLAYER_JUMP_HOLD_FRAME_MAX = 20.0f;
+const int   PLAYER_JUMP_HOLD_FRAME_MAX = 16.0f;
 //! @brief ジャンプ保持中の重力軽減値(ジャンプを長くするために、ジャンプボタンを押し続けている間は重力を弱める)
 //! @brief SUSTAIN: 持続
-const float JUMP_SUSTAIN = 0.12f;
+const float JUMP_SUSTAIN = 0.17f;
 
 // ジャンプ段階用の倍率（内部実装、ここで調整可能）
 static const float JUMP_INIT_MULT_LOW = 1.00f; // 立ち/歩き
@@ -69,7 +69,7 @@ static const float JUMP_INIT_MULT_HIGH = 1.12f; // Bダッシュ（最高速）
 
 static const float GRAVITY_MULT_LOW = 1.20f; // 低速時は重力強め（早く落ちる）
 static const float GRAVITY_MULT_MID = 1.00f; // 中速は基準
-static const float GRAVITY_MULT_HIGH = 1.05f; // 高速時は重力弱め（高く長く飛べる）
+static const float GRAVITY_MULT_HIGH = 0.85f; // 高速時は重力弱め（高く長く飛べる）
 
 
 //-----------------------------------------

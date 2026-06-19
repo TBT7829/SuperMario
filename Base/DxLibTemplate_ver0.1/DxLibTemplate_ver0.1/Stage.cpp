@@ -36,8 +36,8 @@ Stage::~Stage()
 //---------------------------------------------------------------------------------
 void Stage::init()
 {
-	ObjectManager* pOM = ObjectManager::getInstance();
-	PlayerManager::getInstance()->playerGenerate();
+    ObjectManager* pOM = ObjectManager::getInstance();
+	
 
 	/*
 	int mapBuffer[MAP_ROW][MAP_COL];
@@ -59,6 +59,7 @@ void Stage::init()
 
 	MapManager::getInstance()->createStage(stage1MapData, MAP_COL);
 
+	PlayerManager::getInstance()->playerGenerate();
 
 	// ”wŒi‰æ‘œ
 	imageBG = ImageManager::IMAGE_STAGE_BG_11;
@@ -86,6 +87,8 @@ void Stage::update()
 
 	// ƒvƒŒƒCƒ„[‚ÌŽæ“¾
 	Player* pPlayer = pPM->get();
+
+	
 
 	Camera::getInstance().update(pPlayer->pos.x, WINDOW_WIDTH, STAGE_1_LENGTH);
 
