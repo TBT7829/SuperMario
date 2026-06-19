@@ -42,6 +42,7 @@ void ImageManager::initImageManager()
 
 	
 	setImageInfo(IMAGE_KOOPA_WALK, "turtle_walk.png");
+	setImageInfo(IMAGE_KOOPA_SHELL, "turtle_hide.png");
 }
 
 //---------------------------------------------------------------------------------

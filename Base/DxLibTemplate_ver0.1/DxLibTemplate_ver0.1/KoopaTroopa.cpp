@@ -41,19 +41,59 @@ void KoopaTroopa::update()
 			{
 				state = WALKING;
 				movSpeed.x = -1.0f; // 左に向かって歩き出す
+				movSpeed.y = 0.0f;
+
 			}
 		}
 		return; // 出現前はこれ以降の移動処理をしない
 	}
 
-	// 2. 歩行中のとき
-	if (state == WALKING)
+	// プレイヤーに踏まれたかどうかの判定
+	Player* pPlayer = PlayerManager::getInstance()->get();
+	if (pPlayer != nullptr && state == WALKING)
 	{
+		if (pPlayer->movSpeed.y > 0.0f &&
+			pPlayer->pos.x + pPlayer->size.x > pos.x &&
+			pPlayer->pos.x < pos.x + size.x)
+		{
+			float marioFootY = pPlayer->pos.y + pPlayer->size.y;
+			if (marioFootY >= pos.y && marioFootY <= pos.y + 12.0f)
+			{
+				// 踏みつけ成功
+				state = SHELL;      // 甲羅状態にする
+				movSpeed.x = 0.0f;  // その場に止める
+
+				// 画像ハンドルを甲羅のものに切り替える
+				m_imageHandle = ImageManager::getInstance()->getImageHandle(ImageManager::IMAGE_KOOPA_SHELL);
+
+				// マリオを上にポーンと跳ね返らせる
+				pPlayer->movSpeed.y = -5.0f;
+			}
+		}
+	}
+
+	// 2. 歩行中のとき
+	if (state == WALKING || state == SHELL)
+	{
+		// 重力を加算
+		movSpeed.y += 0.5f;
+
+		if (movSpeed.y > 8.0f)
+		{
+			movSpeed.y = 8.0f;
+		}
+
 		// 左右移動の更新
 		pos.x += movSpeed.x;
 		pos.y += movSpeed.y;
 
-		
+		// 地面での着地
+		float groundY = 180.0f;
+		if (pos.y > groundY)
+		{
+			pos.y = groundY;
+			movSpeed.y = 0.0f;
+		}
 	}
 }
 
