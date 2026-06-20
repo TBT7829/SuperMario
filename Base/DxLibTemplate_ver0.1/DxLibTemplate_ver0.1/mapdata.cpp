@@ -129,7 +129,7 @@ void initStage1Map()
     stage1MapData[highRow][94] = QUESTION_BLOCK; // レンガ列の右端がハテナ
 
 
-    stage1MapData[lowRow][94] = BRICK_BLOCK;
+    stage1MapData[lowRow][94] = COIN_BLOCK;
 
     fillBlocks(lowRow, 100, 101, BRICK_BLOCK);
 

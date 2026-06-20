@@ -42,4 +42,7 @@ private:
 
 	//! @brief コインブロックからコインを生成する関数
 	void spawnCoin();
+
+	//! @brief 画像を保存する変数
+	int image;
 };

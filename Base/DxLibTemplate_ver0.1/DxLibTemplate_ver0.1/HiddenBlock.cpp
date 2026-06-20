@@ -1,7 +1,7 @@
 #include "HiddenBlock.h"
 #include "Camera.h"
 #include "ImageManager.h"
-
+#include"CollisionManager.h"
 #include <DxLib.h>
 
 //---------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ HiddenBlock::HiddenBlock(int _id, Float2 _start, int _itemType)
 	itemType = _itemType;	//! 内部アイテムを設定
 	isSolid = true;			//! 空ブロックは当たり判定を持つ
 
-	image = ImageManager::IMAGE_HIDDEN_BLOCK;
+	image = ImageManager::IMAGE_EMPTY_BLOCK_01;
 }
 
 HiddenBlock::~HiddenBlock()
@@ -52,25 +52,25 @@ void HiddenBlock::render()
 
 	// まだアイテム未生成（隠し状態）：通常は描画しない（透明）
 	// デバッグ時のみ薄く枠を描画して位置が分かるようにする
-	if (!hasSpawned)
+	if (hasSpawned)
 	{
 //#ifdef IS_DEBUG
-		// 半透明の薄い枠で表示（デバッグ用）
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 48);
-		DrawBox(x1, y1, x2, y2, GetColor(0, 128, 255), TRUE);
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		//// 半透明の薄い枠で表示（デバッグ用）
+		//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 48);
+		//DrawBox(x1, y1, x2, y2, GetColor(0, 128, 255), TRUE);
+		//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-		DrawLineBox(x1, y1, x2, y2, GetColor(0, 64, 128));
+		//DrawLineBox(x1, y1, x2, y2, GetColor(0, 64, 128));
 //#endif
 
-		return;
+		DrawGraph(x1, y1, imgHandle, TRUE);
 	}
 
 	// 既にスポーン済み（空ブロック化）：EmptyBlock と視覚的に区別するため、薄い青緑系で描画
-	DrawBox(x1, y1, x2, y2, GetColor(160, 200, 200), TRUE);
-	DrawLineBox(x1, y1, x2, y2, GetColor(80, 120, 120));
+	//DrawBox(x1, y1, x2, y2, GetColor(160, 200, 200), TRUE);
+	//DrawLineBox(x1, y1, x2, y2, GetColor(80, 120, 120));
 
-	DrawGraph(drawX, y1, imgHandle, TRUE);
+	
 }
 
 //---------------------------------------------------------------------------------
@@ -79,7 +79,7 @@ void HiddenBlock::render()
 void HiddenBlock::onHit(int hitDirection)
 {
 	// 下からヒットされた場合のみ反応（hitDirection == 1 は下から）
-	if (hitDirection != 1)
+	if (hitDirection != CollisionManager::BOTTOM)
 	{
 		return;
 	}

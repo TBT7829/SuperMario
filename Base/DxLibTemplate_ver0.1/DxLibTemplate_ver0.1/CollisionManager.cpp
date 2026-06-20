@@ -14,6 +14,7 @@
 #include "CoinBlock.h"
 #include "Pipe.h"
 #include "BrickBlock.h"
+#include "HiddenBlock.h"
 #include"Enemy.h"
 #include"Goomba.h"
 #include "Item.h"
@@ -129,6 +130,9 @@ void CollisionManager::updateCollision()
 			}
 			else if (pBlock->getObjectType() == BRICK_BLOCK) {
 				static_cast<BrickBlock*>(pBlock)->onHit(CollisionManager::BOTTOM);
+			}
+			else if (pBlock->getObjectType() == HIDDEN_BLOCK) {
+				static_cast<HiddenBlock*>(pBlock)->onHit(CollisionManager::BOTTOM);
 			}
 		}
 		break;

@@ -203,7 +203,7 @@ void MapManager::createStage(int mapData[MAP_ROW][MAP_COL], int stageWidth)
             case COIN_BLOCK: // コインブロック
             {
                 // デフォルト8コイン（マップに値を拡張して変えられる）
-                CoinBlock* pCoinBlock = new CoinBlock(pOM->generateId(), pixel, 8);
+                CoinBlock* pCoinBlock = new CoinBlock(pOM->generateId(), pixel, 10);
                 if (pBM->Add(pCoinBlock) == false) 
                 {
                     delete pCoinBlock; 

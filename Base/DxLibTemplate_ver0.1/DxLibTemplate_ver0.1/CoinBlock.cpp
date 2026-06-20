@@ -4,6 +4,7 @@
 #include "Coin.h"
 #include "CommonFunc.h"
 #include "CollisionManager.h"
+#include "ImageManager.h"
 #include <DxLib.h>
 
 //---------------------------------------------------------------------------------
@@ -18,6 +19,7 @@ CoinBlock::CoinBlock(int _id, Float2 _start, int _coinCount)
 {
 	maxCoinCount = _coinCount;
 	coinSpawnedCount = 0;
+	image = ImageManager::IMAGE_BRICK_BLOCK;
 	isSolid = true;
 }
 
@@ -44,20 +46,31 @@ void CoinBlock::render()
 	// カメラオフセットを適用
 	float drawX = Camera::getInstance().worldToScreenX(pos.x);
 	int drawY = (int)pos.y;
+
+
+	// 画像ハンドルを取得
+	int imgHandle = ImageManager::getInstance()->getImageHandle(image);
+
 	int x1 = (int)drawX;
 	int y1 = drawY;
 	int x2 = (int)(drawX + size.x);
 	int y2 = drawY + (int)size.y;
 
+	// レンガ色で描画
+	//DrawBox(x1, y1, x2, y2, GetColor(200, 100, 50), TRUE);
+	//DrawLineBox(x1, y1, x2, y2, GetColor(150, 75, 0));
+
+	DrawGraph(x1, y1, imgHandle, TRUE);
+
 	// コインブロック: 金色の矩形
-	DrawBox(x1, y1, x2, y2, GetColor(255, 200, 100), TRUE);
-	DrawLineBox(x1, y1, x2, y2, GetColor(200, 150, 50));
+	//DrawBox(x1, y1, x2, y2, GetColor(255, 200, 100), TRUE);
+	//DrawLineBox(x1, y1, x2, y2, GetColor(200, 150, 50));
 
 	// 残りコイン数を矩形内に表示
-	SetFontSize(10);
-	char coinText[16];
-	sprintf_s(coinText, sizeof(coinText), "%d", getRemainingCoins());
-	DrawString(x1 + 3, y1 + 3, coinText, GetColor(0, 0, 0));
+	//SetFontSize(10);
+	//char coinText[16];
+	//sprintf_s(coinText, sizeof(coinText), "%d", getRemainingCoins());
+	//DrawString(x1 + 3, y1 + 3, coinText, GetColor(0, 0, 0));
 
 	// デバッグ: 生成済みコイン数表示（オプション）
 #ifdef IS_DEBUG
@@ -77,6 +90,9 @@ void CoinBlock::onHit(int hitDirection)
 	if (coinSpawnedCount < maxCoinCount && hitDirection == CollisionManager::BOTTOM)
 	{
 		spawnCoin();
+	}
+	else if (coinSpawnedCount >= maxCoinCount && hitDirection == CollisionManager::BOTTOM) {
+		image = ImageManager::IMAGE_EMPTY_BLOCK_01;
 	}
 }
 
