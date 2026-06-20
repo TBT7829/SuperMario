@@ -42,6 +42,10 @@ public :
 		A_MARIO_FIRE_SNEAK,
 	};
 
+	static enum QUESTION_BLOCK
+	{
+
+	};
 
 private :
 	AnimationDataSet ads[AOT_NUM];

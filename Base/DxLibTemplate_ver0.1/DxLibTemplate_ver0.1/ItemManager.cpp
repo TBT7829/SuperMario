@@ -30,7 +30,7 @@ ItemManager::ItemManager()
 		pItemArray[i] = nullptr;
 	}
 
-
+	ItemNum = 0;
 }
 
 

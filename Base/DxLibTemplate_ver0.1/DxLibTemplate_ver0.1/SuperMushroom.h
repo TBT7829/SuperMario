@@ -37,4 +37,6 @@ public:
 	//! @brief ブロック当たり判定用フラグ
 	bool isBlocked;
 
+	int image;
+
 };

@@ -71,6 +71,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	pIMGM->setImageInfo(ImageManager::IMAGE_PIPE_MIDDLE, "pipe_02.png");
 	pIMGM->setImageInfo(ImageManager::IMAGE_PIPE_HIGH, "pipe_03.png");
 
+	pIMGM->setImageInfo(ImageManager::IMAGE_SUPERMUSHROOM, "pu_item.png");
+
+
 	pIMGM->loadImageAll();
 
 	AnimationRepository::getInstance()->initAnimationRepository();

@@ -1,7 +1,8 @@
 #include "SuperMushroom.h"
 #include "Camera.h"
 #include "ObjectManager.h"
-
+#include"ItemManager.h"
+#include "ImageManager.h"
 #include <DxLib.h>
 
 //---------------------------------------------------------------------------------
@@ -18,28 +19,32 @@ SuperMushroom::SuperMushroom(int _id, Float2 _pos)
 	moveDirection = 1;				// 初期：右方向
 	moveSpeed = 0.5f;				// 移動速度（敵と同じ程度）
 	isBlocked = false;
-
+	image = ImageManager::IMAGE_SUPERMUSHROOM;
 }
 
 //! @brief デストラクタ
 SuperMushroom::~SuperMushroom()
 {
+
 }
 
 //! @brief 更新処理
 void SuperMushroom::update()
 {
-	// 横方向移動
-	velocity.x = moveDirection * moveSpeed;
-	pos.x += velocity.x;
-	
-	// 重力による垂直移動
-	if (isGround == false) {
-		velocity.y += 0.2f;				// 重力加速度
-		pos.y += velocity.y;
+	if (Camera::getInstance().getOffsetX() - BLOCK_SIZE * 3 < pos.x && pos.x <= Camera::getInstance().getOffsetX() + WINDOW_WIDTH + BLOCK_SIZE * 3) {
+
+
+		// 横方向移動
+		velocity.x = moveDirection * moveSpeed;
+		pos.x += velocity.x;
+
+		// 重力による垂直移動
+		if (isGround == false) {
+			velocity.y += 0.2f;				// 重力加速度
+			pos.y += velocity.y;
+		}
+
 	}
-	
-	
 }
 
 //! @brief 描画処理
@@ -54,6 +59,12 @@ void SuperMushroom::render()
 	int x2 = (int)(drawX + size.x);
 	int y2 = drawY + (int)size.y;
 
+	int imgHandle = ImageManager::getInstance()->getImageHandle(image);
+	DrawGraph(x1, y1, imgHandle, TRUE);
+
+	// デバッグ: 移動方向表示（オプション）
+#ifdef IS_DEBUG
+
 	// 赤いマッシュルーム形状
 	// 本実装ではImageManagerでマッシュルーム画像を描画
 	DrawBox(x1, y1, x2, y2, GetColor(255, 0, 0), TRUE);
@@ -63,8 +74,6 @@ void SuperMushroom::render()
 	DrawCircle(x1 + 4, y1 + 4, 1, GetColor(255, 255, 255), TRUE);
 	DrawCircle(x2 - 4, y1 + 4, 1, GetColor(255, 255, 255), TRUE);
 
-	// デバッグ: 移動方向表示（オプション）
-#ifdef IS_DEBUG
 	SetFontSize(8);
 	char mushroomDebugText[16];
 	sprintf_s(mushroomDebugText, sizeof(mushroomDebugText), "M%d", moveDirection);
@@ -82,6 +91,8 @@ void SuperMushroom::onCollectByPlayer()
 
 	// マッシュルーム消去
 	ObjectManager::getInstance()->kill(getObjectId());
+	ItemManager::getInstance()->remove(getObjectId());
+
 
 	// デバッグ出力
 #ifdef IS_DEBUG
