@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include"Const.h"
 #include "ImageManager.h"
+//#include "SoundManager.h"
 #include<DxLib.h>
 #include<cmath>
 
@@ -46,6 +47,8 @@ Player::~Player()
 //---------------------------------------------------------------------------------
 void Player::update()
 {
+	
+
 	// シフトキーで走り（左右シフトどちらでも可）
 	if(CheckHitKey(KEY_INPUT_LSHIFT) || (CheckHitKey(KEY_INPUT_RSHIFT))) 
 	{
@@ -202,6 +205,7 @@ void Player::updateGround()
     // ここでは「床に触れていないならFALLへ遷移」という仕組みを作る
 	moveState.change(FALL);
 
+	
 	// ジャンプ
 	if (CheckHitKey(KEY_INPUT_SPACE)) {
 		moveState.change(JUMP);
@@ -308,6 +312,7 @@ void Player::updateRunning()
 	// ジャンプ入力
 	if (CheckHitKey(KEY_INPUT_SPACE)) {
 		moveState.change(JUMP);
+
 	}
 }
 
