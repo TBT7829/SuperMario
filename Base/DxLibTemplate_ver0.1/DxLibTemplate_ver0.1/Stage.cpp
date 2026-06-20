@@ -67,7 +67,7 @@ void Stage::init()
 	// ŽŸ‚ÌƒV[ƒ“‚Í–¢Ý’è(-1)‚É‚µ‚Ä‚¨‚­
 	nextScene = -1;
 
-	KoopaTroopa* pKoopaTroopa = new KoopaTroopa(400.0f, 150.0f);
+	KoopaTroopa* pKoopaTroopa = new KoopaTroopa(1600.0f, 150.0f);
 	pOM->add(pKoopaTroopa);
 }
 //---------------------------------------------------------------------------------

@@ -51,7 +51,7 @@ void KoopaTroopa::update()
 	// マリオに踏まれたかどうかの判定
 	Player* pPlayer = PlayerManager::getInstance()->get();
 	if (pPlayer != nullptr) {
-		if (state == WALKING)
+		if (state == WALKING || (state == SHELL && movSpeed.x != 0.0f))
 		{
 			if (pPlayer->movSpeed.y > 0.0f &&
 				pPlayer->pos.x + pPlayer->size.x > pos.x &&
@@ -64,8 +64,13 @@ void KoopaTroopa::update()
 					state = SHELL;      // 甲羅状態にする
 					movSpeed.x = 0.0f;  // その場に止める
 
+					// オブジェクト自体の当たり判定サイズも甲羅サイズにする
+					pos.y += (size.y - 16.0f);
+					size.y = 16.0f;
+
 					// 画像ハンドルを甲羅のものに切り替える
 					m_imageHandle = ImageManager::getInstance()->getImageHandle(ImageManager::IMAGE_KOOPA_SHELL);
+					
 
 					// マリオを上にポーンと跳ね返らせる
 					pPlayer->movSpeed.y = -5.0f;
@@ -84,6 +89,7 @@ void KoopaTroopa::update()
 				// マリオと甲羅の中心点を計算して、左右どちらから触ったかを判別する
 				float marioCenterX = pPlayer->pos.x + (pPlayer->size.x / 2.0f);
 				float shellCenterX = pos.x + (size.x / 2.0f);
+
 
 				if (marioCenterX < shellCenterX)
 				{
@@ -115,12 +121,47 @@ void KoopaTroopa::update()
 		pos.x += movSpeed.x;
 		pos.y += movSpeed.y;
 
+		// 滑っている甲羅の壁跳ね返りテスト
+		if (state == SHELL && movSpeed.x != 0.0f)
+		{
+			float leftWallX = 100.0f;
+			float rightWallX = 2130.0f;
+
+			// 左の壁にぶつかった、または突き抜けたとき
+			if (pos.x < leftWallX)
+			{
+				pos.x = leftWallX;     // 壁の位置に補正
+				movSpeed.x *= -1.0f;   // 速度を反転させて右へ跳ね返す！
+			}
+			// 右の壁にぶつかった、または突き抜けたとき
+			else if (pos.x > rightWallX)
+			{
+				pos.x = rightWallX;    // 壁の位置に補正
+				movSpeed.x *= -1.0f;   // 速度を反転させて左へ跳ね返す！
+			}
+		}
+
 		// 地面での着地
 		float groundY = 185.0f;
 		if (pos.y > groundY)
 		{
-			pos.y = groundY;
+			float holeLeftX = 0.0f;
+			float holeRightX = 1400.0f;
+
+			// もしノコノコが穴の範囲の中にいないときだけ着地させる
+			if (pos.x < holeLeftX || pos.x > holeRightX)
+			{
+				pos.y = groundY;
+				movSpeed.y = 0.0f;
+			}
+		}
+
+		// 奈落の底まで落ちたら消滅させる処理
+		// 画面の下端に到達したか
+		if (pos.y > 450.0f)
+		{
 			movSpeed.y = 0.0f;
+			movSpeed.x = 0.0f;
 		}
 	}
 }
@@ -132,8 +173,23 @@ void KoopaTroopa::render()
 
 	float drawX = Camera::getInstance().worldToScreenX(pos.x);
 
+	// 状態に合わせて描画する四角形のサイズを変える
+	float drawSizeX = size.x; // 横幅はそのまま
+	float drawSizeY = size.y; // 縦幅
+	float drawPosY = pos.y;  // 描画を始めるY座標
+
+	// 甲羅状態のときは小さくする
+	if (state == SHELL)
+	{
+		drawSizeY = 16.0f; // 甲羅っぽく、縦幅をに小さくする
+
+		// 地面にピッタリつけるために、小さくなった差分だけ
+		// 描画位置を下にずらす
+		drawPosY += (24.0f - drawSizeY);
+	}
+
 	// 画像の代わりに、緑色の四角形を画面に描く
-	// DrawBox((int)drawX, (int)pos.y, (int)(drawX + size.x), (int)(pos.y + size.y), GetColor(0, 255, 0), TRUE);
+	// DrawBox((int)drawX, (int)drawPosY, (int)(drawX + drawSizeX), (int)(drawPosY + drawSizeY), GetColor(0, 255, 0), TRUE);
 	// ノコノコの画像を描画する
 	DrawGraph((int)drawX, (int)pos.y, m_imageHandle, TRUE);
 }
