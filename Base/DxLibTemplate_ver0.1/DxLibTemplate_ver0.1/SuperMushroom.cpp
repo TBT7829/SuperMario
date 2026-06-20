@@ -30,7 +30,7 @@ SuperMushroom::~SuperMushroom()
 void SuperMushroom::update()
 {
 	// 初代マリオ：マッシュルームは出現後、水平方向に移動して落ちていく
-	// 敵キャラ（Goomba等）と同じ物理演算を使用
+	
 
 	// 横方向移動
 	velocity.x = moveDirection * moveSpeed;

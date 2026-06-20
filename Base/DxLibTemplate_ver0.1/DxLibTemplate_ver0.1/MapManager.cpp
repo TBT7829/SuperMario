@@ -151,7 +151,7 @@ void MapManager::createStage(int mapData[MAP_ROW][MAP_COL], int stageWidth)
             case QUESTION_BLOCK: // ハテナブロック
             {
                 // 仮: デフォルトでコインを内包（必要ならマップデータに種類を持たせる）
-                QuestionBlock* pQB = new QuestionBlock(pOM->generateId(), pixel, QuestionBlock::ITEM_COIN);
+                QuestionBlock* pQB = new QuestionBlock(pOM->generateId(), pixel, QuestionBlock::ITEM_MUSHROOM);
                 if (pBM->Add(pQB) == false) 
                 {
                     delete pQB;

@@ -16,6 +16,8 @@
 #include "BrickBlock.h"
 #include"Enemy.h"
 #include"Goomba.h"
+#include "Item.h"
+#include "ItemManager.h"
 
 #include "Const.h"
 #include "HitFunc.h"
@@ -31,6 +33,7 @@ void CollisionManager::updateCollision()
 	BlockManager* pBM = BlockManager::getInstance();
 	EnemyManager* pEM = EnemyManager::getInstance();
 	MapManager* pMM = MapManager::getInstance();
+	ItemManager* pIM = ItemManager::getInstance();
 	Player* pPlayer = pPM->get();
 
 	// 衝突判定を始める前に、一旦プレイヤーの接地フラグを偽（床なし）にする
@@ -281,6 +284,62 @@ void CollisionManager::updateCollision()
 		} 
 
 	} // エネミーとブロックの当たり判定
+
+	// アイテムとブロックの当たり判定
+	for (int b = 0; b < BLOCK_MAX; b++) {
+		Block* pBlock = pBM->pBlockArray[b];
+
+		if (pBlock == nullptr || !pBlock->isSolid) continue;
+
+		for (int i = 0; i < ITEM_MAX; i++) {
+			Item* pItem = pIM->pItemArray[i];
+
+			if (pItem == nullptr) continue;
+
+			// A(ブロック) と B(アイテム) の当たり判定
+			CollisionInfo ci = detectCollision(pBlock->pos, pBlock->size, pItem->pos, pItem->size);
+
+			// 当たっていなければ次へ
+			if (!ci.isHit) continue;
+
+			// 衝突方向ごとに処理
+			switch (ci.side) {
+			case TOP:
+				// 上
+			{
+				// 最小分離ベクトルで位置補正（上方向へ押し戻す）
+				pItem->pos.y += ci.penetration.y;
+				// 上向き速度が残っているならキャンセルして貫通を防ぐ
+				if (pItem->velocity.y < 0.0f) {
+					pItem->velocity.y = 0.0f;
+				}
+			}
+			break;
+
+			case BOTTOM:
+				// 下
+			{
+
+			}
+			break;
+
+			case LEFT:
+			case RIGHT:
+				// 横方向
+			{
+
+				
+			}
+			break;
+
+			default:
+				break;
+			}
+
+
+		}
+
+	} // アイテムとブロックの当たり判定
 }
 
 

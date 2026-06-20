@@ -76,6 +76,9 @@
     <Filter Include="System\MapData">
       <UniqueIdentifier>{e544dd1b-4a85-4185-92c7-07d625d5d1d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="System\Time">
+      <UniqueIdentifier>{558c9573-af71-4d35-8c7b-aa02c218ec0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneManager.cpp">
@@ -199,6 +202,12 @@
       <Filter>Object\Item</Filter>
     </ClCompile>
     <ClCompile Include="Coin.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>System\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemManager.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
   </ItemGroup>
@@ -339,6 +348,12 @@
       <Filter>Object\Item</Filter>
     </ClInclude>
     <ClInclude Include="Coin.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>System\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemManager.h">
       <Filter>Object\Item</Filter>
     </ClInclude>
   </ItemGroup>

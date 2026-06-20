@@ -7,6 +7,7 @@
 #include "FireFlower.h"
 #include"CommonFunc.h"
 #include "CollisionManager.h"
+#include "ItemManager.h"
 #include <DxLib.h>
 
 //---------------------------------------------------------------------------------
@@ -117,4 +118,10 @@ void QuestionBlock::spawnItem()
 		delete pItem;
 		MY_ABORT();
 	}
+	// ‚à‚µ“o˜^‚Å‚«‚È‚©‚Á‚½‚çAì‚Á‚½ƒAƒCƒeƒ€‚ðíœ‚µ‚Ä’†’f‚·‚é
+	if (pItem && !ItemManager::getInstance()->Add(pItem)) {
+		delete pItem;
+		MY_ABORT();
+	}
+
 }

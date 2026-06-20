@@ -177,6 +177,7 @@
     <ClCompile Include="HitFunc.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="keyManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapManager.cpp" />
@@ -191,6 +192,7 @@
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="SuperMushroom.cpp" />
     <ClCompile Include="TextItem.cpp" />
+    <ClCompile Include="Time.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="mapdata.cpp" />
@@ -224,6 +226,7 @@
     <ClInclude Include="HitFunc.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemManager.h" />
     <ClInclude Include="keyManager.h" />
     <ClInclude Include="MapManager.h" />
     <ClInclude Include="Object.h" />
@@ -239,6 +242,7 @@
     <ClInclude Include="StateMachine.h" />
     <ClInclude Include="SuperMushroom.h" />
     <ClInclude Include="TextItem.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="mapdata.h" />
