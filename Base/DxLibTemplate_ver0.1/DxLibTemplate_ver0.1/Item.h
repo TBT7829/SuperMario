@@ -40,6 +40,8 @@ public:
 	//! @brief 画面外チェック用フラグ
 	bool isOffScreen;
 
+	bool isGround;
+
 protected:
 	//! @brief 初期化処理
 	virtual void activateProc() override;

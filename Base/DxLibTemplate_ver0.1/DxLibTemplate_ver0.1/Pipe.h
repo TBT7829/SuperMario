@@ -40,6 +40,7 @@ public:
 	void onHit(int hitDirection) override;
 
 private:
+	int image;
 	Float2 exitPos;	//! @brief ワープ出口座標
 	int pipeId;		//! @brief 土管識別ID（object idとは別）
 	bool enterable;	//! @brief プレイヤーが入れるかどうか（true=入れる）

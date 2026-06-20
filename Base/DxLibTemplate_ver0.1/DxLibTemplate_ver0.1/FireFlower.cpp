@@ -16,7 +16,7 @@ FireFlower::FireFlower(int _id, Float2 _pos)
 	size = { 14.0f, 16.0f };		// ファイアフラワーサイズ
 	velocity = { 0.0f, 0.0f };
 	moveDirection = 1;				// 初期：右方向
-	moveSpeed = 0.5f;				// 移動速度
+	moveSpeed = 0.0f;				// 移動速度
 	rotationAngle = 0.0f;
 }
 
@@ -36,9 +36,11 @@ void FireFlower::update()
 	pos.x += velocity.x;
 
 	// 重力による垂直移動
-	velocity.y += 0.2f;				// 重力加速度
-	pos.y += velocity.y;
-
+	// 重力による垂直移動
+	if (isGround == false) {
+		velocity.y += 0.2f;				// 重力加速度
+		pos.y += velocity.y;
+	}
 
 	rotationAngle += 12.0f;			// 毎フレーム12度回転
 	

@@ -38,6 +38,8 @@ public:
 	void onHit(int hitDirection) override;
 
 private:
+	int image;
+
 	//! @brief ƒAƒCƒeƒ€‚ª¶¬Ï‚İ‚©‚Ç‚¤‚©
 	bool hasSpawned;
 

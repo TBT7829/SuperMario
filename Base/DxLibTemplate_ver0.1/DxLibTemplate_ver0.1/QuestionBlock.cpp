@@ -1,6 +1,7 @@
 #include "QuestionBlock.h"
 #include "ObjectManager.h"
 #include "BlockManager.h"
+#include "ImageManager.h"
 #include "Camera.h"
 #include "Coin.h"
 #include "SuperMushroom.h"
@@ -21,6 +22,7 @@ QuestionBlock::QuestionBlock(int _id, Float2 _start, int _itemType)
 	hasSpawned = false;		//! 未生成状態で開始
 	itemType = _itemType;	//! 内部アイテムを設定
 	isSolid = true;			//! ハテナブロックは当たり判定を持つ
+	image = ImageManager::IMAGE_EMPTY_BLOCK_01;
 }
 
 //! @brief デストラクタ
@@ -47,9 +49,13 @@ void QuestionBlock::render()
 
 	if (hasSpawned)
 	{
+		// 画像ハンドルを取得
+		int imgHandle = ImageManager::getInstance()->getImageHandle(image);
+		DrawGraph(x1, y1, imgHandle, TRUE);
+
 		//! 使用済み: グレー色（空ブロック状態）
-		DrawBox(x1, y1, x2, y2, GetColor(128, 128, 128), TRUE);
-		DrawLineBox(x1, y1, x2, y2, GetColor(64, 64, 64));
+		//DrawBox(x1, y1, x2, y2, GetColor(128, 128, 128), TRUE);
+		//DrawLineBox(x1, y1, x2, y2, GetColor(64, 64, 64));
 	}
 	else
 	{

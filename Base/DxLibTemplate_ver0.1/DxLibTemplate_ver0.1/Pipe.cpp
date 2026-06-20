@@ -1,5 +1,6 @@
 #include "Pipe.h"
 #include "Camera.h"
+#include "ImageManager.h"
 #include <DxLib.h>
 
 //---------------------------------------------------------------------------------
@@ -14,6 +15,17 @@ Pipe::Pipe(int _id, Float2 _start, Float2 _size, Float2 _exitPos, int _pipeId, b
 	pipeId = _pipeId;
 	enterable = _enterable; // プレイヤーが入れるかどうか
 	isSolid = true;		//! 土管は足場になる（上からは固い）
+
+	if (64 <= _size.y) {
+		image = ImageManager::IMAGE_PIPE_HIGH;
+	}
+	else if (48 <= _size.y) {
+		image = ImageManager::IMAGE_PIPE_MIDDLE;
+	}
+	else {
+		image = ImageManager::IMAGE_PIPE_LOW;
+	}
+
 }
 
 //! @brief デストラクタ
@@ -54,22 +66,19 @@ void Pipe::render()
 
 
 	// 単純な矩形塗りつぶし（既存の見た目）
-	DrawBox(left, top, right, bottom, GetColor(34, 139, 34), TRUE);
+	//DrawBox(left, top, right, bottom, GetColor(34, 139, 34), TRUE);
 
 	// 内側を塗る（見た目）
-	int innerMargin = 4;
-	DrawBox(left + innerMargin, top + innerMargin, right - innerMargin, bottom - innerMargin,
-		GetColor(0, 200, 0), TRUE);
+	//int innerMargin = 4;
+	//DrawBox(left + innerMargin, top + innerMargin, right - innerMargin, bottom - innerMargin,
+	//GetColor(0, 200, 0), TRUE);
 
 	// 上部のリム（強調）
-	DrawBox(left, top, right, top + 4, GetColor(50, 100, 50), TRUE);
-
-	// もし画像で描画したい場合（ImageManager で画像ハンドルを取得できるなら）
-	// int handle = ImageManager::getInstance()->getImageHandle(ImageManager::IMAGE_PIPE_TOP);
-	// if (handle >= 0) {
-	//     // DrawExtendGraph は左上(x＝left, y＝top) から右下(right, bottom) に画像を引き伸ばして描く
-	//     DrawExtendGraph(left, top, right, bottom, handle, TRUE);
-	// });
+	//DrawBox(left, top, right, top + 4, GetColor(50, 100, 50), TRUE);
+	
+	// 画像ハンドルを取得
+	int imgHandle = ImageManager::getInstance()->getImageHandle(image);
+	DrawExtendGraph(left, top, right, bottom, imgHandle, TRUE);
 
 	// 入れる/入れない の視覚的ヒント（デバッグ表示）
 #ifdef IS_DEBUG

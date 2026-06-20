@@ -12,6 +12,7 @@ Item::Item(int _id, OBJECT_TYPE _itemType, Float2 _pos)
 	size = { 8.0f, 8.0f };		// デフォルトサイズ
 	velocity = { 0.0f, 0.0f };
 	isOffScreen = false;
+	isGround = false;
 }
 
 //! @brief デストラクタ

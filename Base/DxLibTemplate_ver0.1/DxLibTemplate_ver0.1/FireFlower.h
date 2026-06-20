@@ -28,7 +28,6 @@ public:
 	//! @note プレイヤーのフォーム変更（FIRE状態へ）
 	void onCollectByPlayer() override;
 
-private:
 	//! @brief 移動方向（-1=左, 1=右）
 	int moveDirection;
 

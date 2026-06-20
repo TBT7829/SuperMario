@@ -29,19 +29,16 @@ SuperMushroom::~SuperMushroom()
 //! @brief 更新処理
 void SuperMushroom::update()
 {
-	// 初代マリオ：マッシュルームは出現後、水平方向に移動して落ちていく
-	
-
 	// 横方向移動
 	velocity.x = moveDirection * moveSpeed;
 	pos.x += velocity.x;
-
+	
 	// 重力による垂直移動
-	velocity.y += 0.2f;				// 重力加速度
-	pos.y += velocity.y;
-
-	// ブロック衝突時の方向転換はCollisionManager で実装
-
+	if (isGround == false) {
+		velocity.y += 0.2f;				// 重力加速度
+		pos.y += velocity.y;
+	}
+	
 	
 }
 

@@ -18,6 +18,7 @@
 #include"Goomba.h"
 #include "Item.h"
 #include "ItemManager.h"
+#include "SuperMushroom.h"
 
 #include "Const.h"
 #include "HitFunc.h"
@@ -242,7 +243,7 @@ void CollisionManager::updateCollision()
 			if (pEnemy == nullptr) continue;
 
 			// A(ブロック) と B(エネミー) の当たり判定
-			CollisionInfo ci = detectCollision(pBlock->pos, pBlock->size, pEnemy->pos, pEnemy->size);
+			CollisionInfo ci = detectCollision(pEnemy->pos, pEnemy->size, pBlock->pos, pBlock->size);
 
 			// 当たっていなければ次へ
 			if (!ci.isHit) continue;
@@ -285,19 +286,22 @@ void CollisionManager::updateCollision()
 
 	} // エネミーとブロックの当たり判定
 
+
 	// アイテムとブロックの当たり判定
-	for (int b = 0; b < BLOCK_MAX; b++) {
-		Block* pBlock = pBM->pBlockArray[b];
+	for (int i = 0; i < ITEM_MAX; i++) {
+		Item* pItem = pIM->pItemArray[i];
+	
+		if (pItem == nullptr) continue;
+		
+		pItem->isGround = false;
 
-		if (pBlock == nullptr || !pBlock->isSolid) continue;
+		for (int b = 0; b < BLOCK_MAX; b++) {
+			Block* pBlock = pBM->pBlockArray[b];
 
-		for (int i = 0; i < ITEM_MAX; i++) {
-			Item* pItem = pIM->pItemArray[i];
-
-			if (pItem == nullptr) continue;
+			if (pBlock == nullptr || !pBlock->isSolid) continue;
 
 			// A(ブロック) と B(アイテム) の当たり判定
-			CollisionInfo ci = detectCollision(pBlock->pos, pBlock->size, pItem->pos, pItem->size);
+			CollisionInfo ci = detectCollision(pItem->pos, pItem->size, pBlock->pos, pBlock->size);
 
 			// 当たっていなければ次へ
 			if (!ci.isHit) continue;
@@ -308,11 +312,12 @@ void CollisionManager::updateCollision()
 				// 上
 			{
 				// 最小分離ベクトルで位置補正（上方向へ押し戻す）
-				pItem->pos.y += ci.penetration.y;
-				// 上向き速度が残っているならキャンセルして貫通を防ぐ
-				if (pItem->velocity.y < 0.0f) {
-					pItem->velocity.y = 0.0f;
-				}
+				pItem->pos.y = pBlock->pos.y - pItem->size.y;
+				// 落下速度をキャンセル
+				pItem->velocity.y = 0.0f;
+				pItem->isGround = true;
+				
+				
 			}
 			break;
 
@@ -327,7 +332,14 @@ void CollisionManager::updateCollision()
 			case RIGHT:
 				// 横方向
 			{
+				// 壁へのめり込みを押し戻す
+				pItem->pos.x += ci.penetration.x;
 
+				// マッシュルームなら進行方向を反転させる
+				if (pItem->getObjectType() == SUPER_MUSHROOM) {
+					SuperMushroom* pMushroom = (SuperMushroom*)pItem;
+					pMushroom->moveDirection *= -1;
+				}
 				
 			}
 			break;

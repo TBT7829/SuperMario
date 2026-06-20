@@ -60,16 +60,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	pIMGM->setImageInfo(ImageManager::IMAGE_FIRE_MARIO_DASH, "fire_mario_dash.png");
 	pIMGM->setImageInfo(ImageManager::IMAGE_FIRE_MARIO_ATTACK, "fire_mario_attack.png");
 
-
-
 	pIMGM->setImageInfo(ImageManager::IMAGE_STAGE_BG_11, "world_bgonly_11.png");
-	//pIMGM->setImageInfo(ImageManager::IMAGE_STAGE_BG_11, "world_11.png");
 
 	pIMGM->setImageInfo(ImageManager::IMAGE_GROUND_BLOCK_11, "ground_block_11.png");
-	
 	pIMGM->setImageInfo(ImageManager::IMAGE_HARD_BLOCK, "hard_block.png");
-
 	pIMGM->setImageInfo(ImageManager::IMAGE_BRICK_BLOCK, "brick_block01.png");
+	pIMGM->setImageInfo(ImageManager::IMAGE_EMPTY_BLOCK_01, "empty_block01.png");
+
+	pIMGM->setImageInfo(ImageManager::IMAGE_PIPE_LOW, "pipe_01.png");
+	pIMGM->setImageInfo(ImageManager::IMAGE_PIPE_MIDDLE, "pipe_02.png");
+	pIMGM->setImageInfo(ImageManager::IMAGE_PIPE_HIGH, "pipe_03.png");
 
 	pIMGM->loadImageAll();
 

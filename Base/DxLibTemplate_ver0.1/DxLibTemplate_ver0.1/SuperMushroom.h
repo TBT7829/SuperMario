@@ -28,7 +28,6 @@ public:
 	//! @note プレイヤーのフォーム変更（TALL状態へ）
 	void onCollectByPlayer() override;
 
-private:
 	//! @brief 移動方向（-1=左, 1=右）
 	int moveDirection;
 
@@ -38,5 +37,4 @@ private:
 	//! @brief ブロック当たり判定用フラグ
 	bool isBlocked;
 
-	
 };
