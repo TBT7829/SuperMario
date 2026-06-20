@@ -2,7 +2,7 @@
 #include "Camera.h"
 #include"Const.h"
 #include "ImageManager.h"
-//#include "SoundManager.h"
+#include "SoundManager.h"
 #include<DxLib.h>
 #include<cmath>
 
@@ -209,6 +209,13 @@ void Player::updateGround()
 	// ジャンプ
 	if (CheckHitKey(KEY_INPUT_SPACE)) {
 		moveState.change(JUMP);
+		SoundManager* pSoundManager = SoundManager::getInstance();
+
+		// サウンドの取得
+		int JumpHandle = pSoundManager->getSoundHandle(SoundManager::SOUND_PLAYER_JUMP);
+
+		PlaySoundMem(JumpHandle, DX_PLAYTYPE_BACK);
+
 	}
 
 }

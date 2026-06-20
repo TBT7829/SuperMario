@@ -106,7 +106,7 @@ void Stage::update()
 		// 再生中でなければループ再生を開始する
 		if (CheckSoundMem(bgmHandle) == 0)
 		{
-			(bgmHandle, DX_PLAYTYPE_LOOP);
+			PlaySoundMem(bgmHandle, DX_PLAYTYPE_LOOP);
 		}
 	}
 

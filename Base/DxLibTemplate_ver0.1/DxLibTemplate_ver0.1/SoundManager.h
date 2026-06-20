@@ -28,7 +28,7 @@ public:
 	enum SOUND_NAME
 	{
 		SOUND_STAGE = 0,
-		//SOUND_PLAYER_JUMP,
+		SOUND_PLAYER_JUMP,
 	};
 
 	//! @brief ƒVƒ“ƒOƒ‹ƒgƒ“

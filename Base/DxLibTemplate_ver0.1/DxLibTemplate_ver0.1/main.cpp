@@ -66,7 +66,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// «‰¹º‚Ì“Ç‚Ýž‚Ý«
 	
 	pSM->setSoundInfo(SoundManager::SOUND_STAGE, "stage1_1.mp3");
-	//pSM->setSoundInfo(SoundManager::SOUND_PLAYER_JUMP, "jump.mp3");
+	pSM->setSoundInfo(SoundManager::SOUND_PLAYER_JUMP, "jump.mp3");
 		
 	pSM->loadSoundAll();
 
