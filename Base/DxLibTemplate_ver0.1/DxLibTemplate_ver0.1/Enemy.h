@@ -16,6 +16,7 @@ public:
         pos = _start;
         size.x = _size.x;
         size.y = _size.y;
+        isGround = false;
     }
     //! @brief デストラクタ
     virtual ~Enemy() {}
@@ -31,4 +32,6 @@ public:
     Float2 pos;
     //! @brief サイズ
     Float2 size;
+
+    bool isGround;
 };

@@ -157,6 +157,7 @@ void AnimationRepository::initAnimationRepository()
 	pAd->pushSetWait(16);
 	pAd->pushJump(0);
 
+	// ƒNƒŠƒ{[
 	pAds = getAds(AOT_GOOMBA);
 	pAd = pAds->getAnimationData(0);
 	imageHandle = pImageManager->getImageHandle(ImageManager::IMAGE_GOOMBA);

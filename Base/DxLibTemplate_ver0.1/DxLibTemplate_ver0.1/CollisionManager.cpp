@@ -232,15 +232,17 @@ void CollisionManager::updateCollision()
 	
 
 	// ブロックとエネミーの当たり判定
-	for (int b = 0; b < BLOCK_MAX; b++) {
-		Block* pBlock = pBM->pBlockArray[b];
+	for (int e = 0; e < ENEMY_MAX; e++) {
+		Enemy* pEnemy = pEM->pEnemyArray[e];
 
-		if (pBlock == nullptr || !pBlock->isSolid) continue;
+		if (pEnemy == nullptr) continue;
 
-		for (int e = 0; e < ENEMY_MAX; e++) {
-			Enemy* pEnemy = pEM->pEnemyArray[e];
+		pEnemy->isGround = false;
 
-			if (pEnemy == nullptr) continue;
+		for (int b = 0; b < BLOCK_MAX; b++) {
+			Block* pBlock = pBM->pBlockArray[b];
+
+			if (pBlock == nullptr || !pBlock->isSolid) continue;
 
 			// A(ブロック) と B(エネミー) の当たり判定
 			CollisionInfo ci = detectCollision(pEnemy->pos, pEnemy->size, pBlock->pos, pBlock->size);
@@ -253,6 +255,15 @@ void CollisionManager::updateCollision()
 			case TOP:
 				// 上
 			{
+				// 最小分離ベクトルで位置補正（上方向へ押し戻す）
+				pEnemy->pos.y = pBlock->pos.y - pEnemy->size.y;
+				// クリボー
+				if (pEnemy->getObjectType() == GOOMBA) {
+					Goomba* pGoomba = (Goomba*)pEnemy;
+					// 落下速度をキャンセル
+					pGoomba->moveSpeed.y = 0;
+					pGoomba->isGround = true;
+				}
 				
 			}
 			break;
@@ -272,7 +283,7 @@ void CollisionManager::updateCollision()
 				// クリボー
 				if (pEnemy->getObjectType() == GOOMBA) {
 					Goomba* pGoomba = (Goomba*)pEnemy;
-					pGoomba->moveSpeed *= -1;
+					pGoomba->moveSpeed.x *= -1;
 				}
 			}
 			break;

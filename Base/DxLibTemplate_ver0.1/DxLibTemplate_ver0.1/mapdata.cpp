@@ -100,7 +100,13 @@ void initStage1Map()
     stage1MapData[lowRow - 1][64] = HIDDEN_BLOCK; // 上段のハテナ
 
 
-    stage1MapData[MAP_ROW - 3 ][30] = GOOMBA;
+    stage1MapData[MAP_ROW - 3 ][22] = GOOMBA;
+
+    stage1MapData[MAP_ROW - 3][42] = GOOMBA;
+
+    stage1MapData[MAP_ROW - 3][50] = GOOMBA;
+
+    stage1MapData[MAP_ROW - 3][52] = GOOMBA;
 
     // =================================================================
     // 最初の穴 〜 2つ目の穴まで
@@ -111,6 +117,10 @@ void initStage1Map()
     stage1MapData[lowRow][79] = BRICK_BLOCK;
 
     fillBlocks(highRow, 80, 87, BRICK_BLOCK); // 上段に長く続くレンガ
+
+    stage1MapData[highRow - 1][80] = GOOMBA;
+
+    stage1MapData[highRow - 1][81] = GOOMBA;
 
     // =================================================================
     // 2つ目の穴 〜 階段地帯まで
