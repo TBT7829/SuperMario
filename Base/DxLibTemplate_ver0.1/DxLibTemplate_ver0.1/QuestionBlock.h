@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Block.h"
+#include "AnimationPlayer.h"
 
 //! @brief ハテナブロッククラス
 //! @brief Block クラスを継承
@@ -38,6 +39,9 @@ public:
 	void onHit(int hitDirection) override;
 
 private:
+	// アニメーション再生機インスタンス
+	AnimationPlayer animPlayer;
+
 	int image;
 
 	//! @brief アイテムが生成済みかどうか

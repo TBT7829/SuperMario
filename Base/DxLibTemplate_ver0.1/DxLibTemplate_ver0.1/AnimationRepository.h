@@ -17,6 +17,9 @@ public :
 	{
 		AOT_MARIO,
 
+		AOT_QUESTIONBLOCK,
+
+		AOT_GOOMBA,
 
 		AOT_NUM,
 	};
@@ -42,10 +45,7 @@ public :
 		A_MARIO_FIRE_SNEAK,
 	};
 
-	static enum QUESTION_BLOCK
-	{
-
-	};
+	
 
 private :
 	AnimationDataSet ads[AOT_NUM];

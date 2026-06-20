@@ -62,6 +62,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	pIMGM->setImageInfo(ImageManager::IMAGE_STAGE_BG_11, "world_bgonly_11.png");
 
+	pIMGM->setImageInfo(ImageManager::IMAGE_QUESTION_BLOCK, "item_block.png");
 	pIMGM->setImageInfo(ImageManager::IMAGE_GROUND_BLOCK_11, "ground_block_11.png");
 	pIMGM->setImageInfo(ImageManager::IMAGE_HARD_BLOCK, "hard_block.png");
 	pIMGM->setImageInfo(ImageManager::IMAGE_BRICK_BLOCK, "brick_block01.png");
@@ -73,6 +74,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	pIMGM->setImageInfo(ImageManager::IMAGE_SUPERMUSHROOM, "pu_item.png");
 
+	pIMGM->setImageInfo(ImageManager::IMAGE_GOOMBA, "kuribo_wolk.png");
 
 	pIMGM->loadImageAll();
 

@@ -144,6 +144,28 @@ void AnimationRepository::initAnimationRepository()
 	pAd->pushSetImage(pImageManager->getImageHandle(ImageManager::IMAGE_FIRE_MARIO_DOWN));
 	pAd->pushSetWait(9999);
 	pAd->pushEnd();
+
+	// ハテナブロック
+	pAds = getAds(AOT_QUESTIONBLOCK);
+	pAd = pAds->getAnimationData(0);
+	imageHandle = pImageManager->getImageHandle(ImageManager::IMAGE_QUESTION_BLOCK);
+	pAd->pushSetImage(DerivationGraph(0, 0, 16, 16, imageHandle));
+	pAd->pushSetWait(16);
+	pAd->pushSetImage(DerivationGraph(16, 0, 16, 16, imageHandle));
+	pAd->pushSetWait(16);
+	pAd->pushSetImage(DerivationGraph(32, 0, 16, 16, imageHandle));
+	pAd->pushSetWait(16);
+	pAd->pushJump(0);
+
+	pAds = getAds(AOT_GOOMBA);
+	pAd = pAds->getAnimationData(0);
+	imageHandle = pImageManager->getImageHandle(ImageManager::IMAGE_GOOMBA);
+	pAd->pushSetImage(DerivationGraph(0, 0, 16, 16, imageHandle));
+	pAd->pushSetWait(16);
+	pAd->pushSetImage(DerivationGraph(16, 0, 16, 16, imageHandle));
+	pAd->pushSetWait(16);
+	pAd->pushJump(0);
+
 }
 
 AnimationDataSet* AnimationRepository::getAds(int AnimobjectType)

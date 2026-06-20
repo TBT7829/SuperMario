@@ -9,6 +9,7 @@
 #include"CommonFunc.h"
 #include "CollisionManager.h"
 #include "ItemManager.h"
+#include "AnimationRepository.h"
 #include <DxLib.h>
 
 //---------------------------------------------------------------------------------
@@ -17,7 +18,7 @@
 
 //! @brief コンストラクタ
 QuestionBlock::QuestionBlock(int _id, Float2 _start, int _itemType)
-	: Block(_id, OBJECT_TYPE::QUESTION_BLOCK, _start, { 16.0f, 16.0f })
+	: Block(_id, OBJECT_TYPE::QUESTION_BLOCK, _start, { 16.0f, 16.0f }), animPlayer(AnimationRepository::getInstance()->getAds(AnimationRepository::AOT_QUESTIONBLOCK), 0, 0)
 {
 	hasSpawned = false;		//! 未生成状態で開始
 	itemType = _itemType;	//! 内部アイテムを設定
@@ -33,7 +34,7 @@ QuestionBlock::~QuestionBlock()
 //! @brief 更新処理
 void QuestionBlock::update()
 {
-	
+	animPlayer.update();
 }
 
 //! @brief 描画処理
@@ -66,6 +67,8 @@ void QuestionBlock::render()
 		//! ハテナマーク '?' を中央に描画
 		SetFontSize(12);
 		DrawString(x1 + 4, y1 + 2, "?", GetColor(0, 0, 0));
+
+		animPlayer.render(x1, y1);
 	}
 }
 
