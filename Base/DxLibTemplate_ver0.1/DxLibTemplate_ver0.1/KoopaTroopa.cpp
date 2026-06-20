@@ -48,30 +48,58 @@ void KoopaTroopa::update()
 		return; // 出現前はこれ以降の移動処理をしない
 	}
 
-	// プレイヤーに踏まれたかどうかの判定
+	// マリオに踏まれたかどうかの判定
 	Player* pPlayer = PlayerManager::getInstance()->get();
-	if (pPlayer != nullptr && state == WALKING)
-	{
-		if (pPlayer->movSpeed.y > 0.0f &&
-			pPlayer->pos.x + pPlayer->size.x > pos.x &&
-			pPlayer->pos.x < pos.x + size.x)
+	if (pPlayer != nullptr) {
+		if (state == WALKING)
 		{
-			float marioFootY = pPlayer->pos.y + pPlayer->size.y;
-			if (marioFootY >= pos.y && marioFootY <= pos.y + 12.0f)
+			if (pPlayer->movSpeed.y > 0.0f &&
+				pPlayer->pos.x + pPlayer->size.x > pos.x &&
+				pPlayer->pos.x < pos.x + size.x)
 			{
-				// 踏みつけ成功
-				state = SHELL;      // 甲羅状態にする
-				movSpeed.x = 0.0f;  // その場に止める
+				float marioFootY = pPlayer->pos.y + pPlayer->size.y;
+				if (marioFootY >= pos.y && marioFootY <= pos.y + 12.0f)
+				{
+					// 踏みつけ成功
+					state = SHELL;      // 甲羅状態にする
+					movSpeed.x = 0.0f;  // その場に止める
 
-				// 画像ハンドルを甲羅のものに切り替える
-				m_imageHandle = ImageManager::getInstance()->getImageHandle(ImageManager::IMAGE_KOOPA_SHELL);
+					// 画像ハンドルを甲羅のものに切り替える
+					m_imageHandle = ImageManager::getInstance()->getImageHandle(ImageManager::IMAGE_KOOPA_SHELL);
 
-				// マリオを上にポーンと跳ね返らせる
-				pPlayer->movSpeed.y = -5.0f;
+					// マリオを上にポーンと跳ね返らせる
+					pPlayer->movSpeed.y = -5.0f;
+				}
+			}
+		}
+		// B. すでに甲羅状態で、かつ止まっているときに横から触られたら滑らす
+		else if (state == SHELL && movSpeed.x == 0.0f)
+		{
+			// マリオと甲羅の矩形が重なっているかチェック
+			if (pPlayer->pos.x + pPlayer->size.x > pos.x &&
+				pPlayer->pos.x < pos.x + size.x &&
+				pPlayer->pos.y + pPlayer->size.y > pos.y &&
+				pPlayer->pos.y < pos.y + size.y)
+			{
+				// マリオと甲羅の中心点を計算して、左右どちらから触ったかを判別する
+				float marioCenterX = pPlayer->pos.x + (pPlayer->size.x / 2.0f);
+				float shellCenterX = pos.x + (size.x / 2.0f);
+
+				if (marioCenterX < shellCenterX)
+				{
+					// マリオが左側にいる ? 右へ高速に滑り出す
+					movSpeed.x = 4.0f;
+				}
+				else
+				{
+					// マリオが右側にいる ? 左へ高速に滑り出す
+					movSpeed.x = -4.0f;
+				}
+
+
 			}
 		}
 	}
-
 	// 2. 歩行中のとき
 	if (state == WALKING || state == SHELL)
 	{
@@ -88,7 +116,7 @@ void KoopaTroopa::update()
 		pos.y += movSpeed.y;
 
 		// 地面での着地
-		float groundY = 180.0f;
+		float groundY = 185.0f;
 		if (pos.y > groundY)
 		{
 			pos.y = groundY;
